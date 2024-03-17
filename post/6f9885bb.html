@@ -1,0 +1,302 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>标准卷积 | 希予</title><meta name="author" content="王宝旭"><meta name="copyright" content="王宝旭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、卷积提出背景 在全连接网络中，一张图片上的所有像素点会被展开成一个1维向量输入网络，如下图所示，28 x 28的输入数据被展开成为784 x 1 的数据作为输入。这样往往会存在两个问题：输入数据的空间信息丢失。空间上相邻的像素点往往具有相似的RGB值，RGB的各个通道之间的数据通常密切相关，但是转化成1维向量时，这些信息被丢失。如下图所示，空间位置相邻的两个点A和B，转化成1维向量后并没有体现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准卷积">
+<meta property="og:url" content="http://example.com/post/6f9885bb.html">
+<meta property="og:site_name" content="希予">
+<meta property="og:description" content="一、卷积提出背景 在全连接网络中，一张图片上的所有像素点会被展开成一个1维向量输入网络，如下图所示，28 x 28的输入数据被展开成为784 x 1 的数据作为输入。这样往往会存在两个问题：输入数据的空间信息丢失。空间上相邻的像素点往往具有相似的RGB值，RGB的各个通道之间的数据通常密切相关，但是转化成1维向量时，这些信息被丢失。如下图所示，空间位置相邻的两个点A和B，转化成1维向量后并没有体现">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/img/index.png">
+<meta property="article:published_time" content="2024-03-17T07:50:00.000Z">
+<meta property="article:modified_time" content="2024-03-17T09:26:44.326Z">
+<meta property="article:author" content="王宝旭">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/index.png"><link rel="shortcut icon" href="/img/1.jpg"><link rel="canonical" href="http://example.com/post/6f9885bb.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '标准卷积',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-17 17:26:44'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/index.png')"><nav id="nav"><span id="blog-info"><a href="/" title="希予"><span class="site-name">希予</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">标准卷积</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-03-17T07:50:00.000Z" title="Created 2024-03-17 15:50:00">2024-03-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-03-17T09:26:44.326Z" title="Updated 2024-03-17 17:26:44">2024-03-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%B7%E7%A7%AF%E6%A8%A1%E5%9E%8B/">卷积模型</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%B7%E7%A7%AF%E6%A8%A1%E5%9E%8B/%E5%8D%B7%E7%A7%AF%E7%AE%97%E5%AD%90/">卷积算子</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>13mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="标准卷积"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="一、卷积提出背景"><a href="#一、卷积提出背景" class="headerlink" title="一、卷积提出背景"></a>一、卷积提出背景</h3><hr>
+<p>在全连接网络中，一张图片上的所有像素点会被展开成一个1维向量输入网络，如下图所示，28 x 28的输入数据被展开成为784 x 1 的数据作为输入。<br><img src="/image/image-20240317155753638.png" alt="image-20240317155753638"><br>这样往往会存在两个问题：<br><strong>输入数据的空间信息丢失</strong>。空间上相邻的像素点往往具有相似的RGB值，RGB的各个通道之间的数据通常密切相关，但是转化成1维向量时，这些信息被丢失。如下图所示，空间位置相邻的两个点A和B，转化成1维向量后并没有体现出他们之间的空间关联性。<br><img src="/image/image-20240317155859780.png" alt="image-20240317155859780" style="zoom:40%;"><br><strong>模型参数过多，容易发生过拟合</strong>。由于每个像素点都要跟所有输出的神经元相连接。当图片尺寸变大时，输入神经元的个数会按图片尺寸的平方增大，导致模型参数过多，容易发生过拟合。</p>
+<p>为了解决上述问题，引入<strong>卷积（Convolution）</strong>来对输入的图像进行特征提取。卷积的计算范围是在像素点的空间邻域内进行的，因此可以利用输入图像的空间信息；此外，由于卷积具有<strong>局部连接、权重共享</strong>等特性，卷积核参数的数目也远小于全连接层。</p>
+<h3 id="二、卷积核、特征图、卷积计算"><a href="#二、卷积核、特征图、卷积计算" class="headerlink" title="二、卷积核、特征图、卷积计算"></a>二、卷积核、特征图、卷积计算</h3><hr>
+<ul>
+<li>**卷积核（kernel）:**也被叫做滤波器(filter)，假设卷积核的高和宽分别为$k_h$和$k_w$，则称之为$k_h×k_w$卷积，卷积核中数值为对图像中与卷积核同样大小的子块像素点进行卷积计算时所采用的权重。</li>
+<li>**卷积计算（convolution）:**图像中像素点具有很强的空间依赖性，卷积就是针对像素点的空间依赖性来对图像进行处理的一种技术。</li>
+<li>**特征图（feature map）:**卷积滤波结果在卷积神经网络中被称为特征图。</li>
+</ul>
+<p><strong>应用实例</strong></p>
+<p>在卷积神经网络中，卷积层的实现方式实际上是<strong>数学中定义的互相关 （cross-correlation）运算</strong>，具体的计算过程如下图所示，每张图的左图表示输入数据是一个维度为3 x 3的二维数组；中间的图表示卷积核是一个维度为2 x 2的二维数组。<br><img src="/image/image-20240317162100565.png" alt="image-20240317162100565"><br>卷积核的计算过程可以用下面的数学公式表示，其中$a$代表输入图片，$b$代表输出特征图，$w$是卷积核参数，它们都是二维数组，$\sum u,v$表示对卷积核参数进行比遍历并求和。</p>
+<p>$$b[i,j]&#x3D;\sum_{u,v}a[i+u,j+v]*w[u,v]$$</p>
+<p><strong>思考：</strong><br>为了能够更好地拟合数据，在卷积神经网络中，一个卷积算子除了上面描述的卷积过程之外，还包括加上偏置项(bias)的操作。</p>
+<p><strong>说明：</strong></p>
+<ol>
+<li>输入图像的边缘像素因其处于边缘位置，因此无法参与卷积计算；</li>
+<li>图像卷积计算实质上是对图像进行了<strong>下采样</strong> (down sampling)操作。对卷积得到的图像结果不断卷积滤波，则原始图像就会被“层层抽象、层层约减”，从而使得蕴涵在图像中的重要信息“显山露水”；</li>
+<li>卷积核中的权重系数$w_i$是通过<strong>数据驱动机制</strong>学习得到，其用来捕获图像中某像素点及其邻域像素点所构成的特有空间模式。一旦从数据中学习得到权重系数，这些权重系数就刻画了图像中像素点构成的<strong>空间分布不同模式</strong>。</li>
+</ol>
+<h3 id="三、填充（Padding）"><a href="#三、填充（Padding）" class="headerlink" title="三、填充（Padding）"></a>三、填充（Padding）</h3><hr>
+<p>输入图像边缘位置的像素点无法进行卷积滤波，为了使边缘像素也参与卷积滤波，填充技术应运而生。填充是指在边缘像素点周围进行0填充，使得输入图像的边缘像素也可以参与卷积计算。<strong>注意，在这种填充机制下，卷积后的图像分辨率将与卷积前图像分辨率一致，不存在下采样。</strong></p>
+<p><strong>应用实列</strong></p>
+<p>在上面的例子中，输入图片尺寸为3×3，输出图片尺寸为2×2，经过一次卷积之后，图片尺寸变小。卷积输出特征图的尺寸计算方法如下</p>
+<p>$$H_{out}&#x3D;H-k_h+1$$<br>$$W_{out}&#x3D;W-k_w+1$$</p>
+<p>如果输入尺寸为4，卷积核的大小为3时，输出尺寸为2。<br>当卷积核尺寸大于1时，输出特征图的尺寸会小于输入图片尺寸。如果经过多次卷积，输出图片尺寸会不断减小。为了避免卷积之后图片尺寸变小，通常会在图片外围进行填充（padding）。<br><img src="/image/image-20240317163941251.png" alt="image-20240317163941251">如果在输入图片第一行之前填充$p_{h1}$行，在最后一行之后填充$p_{h2}$行；在图片第1列之前填充$p_{w1}$列，在最后1列之后填充$p_{w2}$列；则填充之后的图片尺寸为$(H + p_{h1} + p_{h2})\times(W + p_{w1} + p_{w2})$。经过大小为$k_h\times k_w$的卷积核操作之后，输出图片的尺寸为：</p>
+<p>$$H_{out} &#x3D; H + p_{h1} + p_{h2} - k_h + 1$$</p>
+<p>$$W_{out} &#x3D; W + p_{w1} + p_{w2} - k_w + 1$$</p>
+<p>在卷积计算过程中，通常会在高度或者宽度的两侧采取等量填充，即$p_{h1} &#x3D; p_{h2} &#x3D; p_h,\ \ p_{w1} &#x3D; p_{w2} &#x3D; p_w$，上面计算公式也就变为：</p>
+<p>$$H_{out} &#x3D; H + 2p_h - k_h + 1$$</p>
+<p>$$W_{out} &#x3D; W + 2p_w - k_w + 1$$<br>为了便于padding，卷积核大小通常使用1，3，5，7这样的奇数，这样如果使用的填充大小为$p_h&#x3D;(k_h-1)&#x2F;2 ，p_w&#x3D;(k_w-1)&#x2F;2$，则可以使得卷积之后图像尺寸不变。例如当卷积核大小为3时，padding大小为1，卷积之后图像尺寸不变；同理，如果卷积核大小为5，padding大小为2，也能保持图像尺寸不变。</p>
+<h4 id="四、步长（Stride）"><a href="#四、步长（Stride）" class="headerlink" title="四、步长（Stride）"></a>四、步长（Stride）</h4><hr>
+<p>在卷积操作时，通常希望输出图像分辨率与输入图像分辨率相比会逐渐减少，即图像被约减。因此，可以通过改变卷积核在输入图像中移动步长大小来跳过一些像素，进行卷积滤波。当Stride&#x3D;1时，卷积核滑动跳过1个像素，这是最基本的单步滑动，也是标准的卷积模式。Stride&#x3D;k表示卷积核移动跳过的步长是k。</p>
+<p><strong>应用实例</strong></p>
+<p>下图是步长为2的卷积过程，卷积核每次移动2个像素点<br><img src="/image/image-20240317164929949.png" alt="image-20240317164929949">当高和宽方向的步幅分别为$s_h$和$s_w$时，输出特征图尺寸的计算公式是：</p>
+<p>$$H_{out} &#x3D; \frac{H + 2p_h - k_h}{s_h} + 1$$</p>
+<p>$$W_{out} &#x3D; \frac{W + 2p_w - k_w}{s_w} + 1$$</p>
+<p><strong>思考：</strong></p>
+<p>假设输入图片尺寸是$H\times W &#x3D; 100 \times 100$，卷积核大小$k_h \times k_w &#x3D; 3 \times 3$，填充$p_h &#x3D; p_w &#x3D; 1$，步长为$s_h &#x3D; s_w &#x3D; 2$，则输出特征图的尺寸为：</p>
+<p>$$H_{out} &#x3D; \frac{100 + 2 - 3}{2} + 1 &#x3D; 50$$</p>
+<p>$$W_{out} &#x3D; \frac{100 + 2 - 3}{2} + 1 &#x3D; 50$$</p>
+<h3 id="五、感受野（Receptive-Field）"><a href="#五、感受野（Receptive-Field）" class="headerlink" title="五、感受野（Receptive Field）"></a>五、感受野（Receptive Field）</h3><hr>
+<p>卷积所得结果中，每个特征图像素点取值依赖于输入图像中的某个区域，该区域被称为<strong>感受野</strong>，正所谓“管中窥豹、见微知著”。那么这个区域在哪呢，在卷积神经网络中，感受野是特征图上的点对应输入图像上的区域。感受野内每个元素数值的变动，都会影响输出点的数值变化。</p>
+<p><strong>应用实例</strong></p>
+<p>比如3×3卷积对应的感受野大小就是3×3，如下图所示<br><img src="/image/image-20240317165353412.png" alt="image-20240317165353412"><br>而当通过两层3×3的卷积之后，感受野的大小将会增加到5×5。<br><img src="/image/image-20240317165434257.png" alt="image-20240317165434257"></p>
+<p><strong>因此，当增加卷积网络深度的同时，感受野将会增大，输出特征图中的一个像素点将会包含更多的图像语义信息。</strong></p>
+<h3 id="六、多输入通道、多输出通道和批量操作"><a href="#六、多输入通道、多输出通道和批量操作" class="headerlink" title="六、多输入通道、多输出通道和批量操作"></a>六、多输入通道、多输出通道和批量操作</h3><hr>
+<p>前面涉及的卷积计算过程比较简单，实际应用时，处理的问题要复杂的多。例如：对于彩色图片有RGB三个通道，需要处理多输入通道的场景，相应的输出特征图往往也会具有多个通道。而且在神经网络的计算中常常是把一个批次的样本放在一起计算，所以卷积算子需要具有批量处理多输入和多输出通道数据的功能。</p>
+<p><strong>多输入通道场景</strong></p>
+<p>当输入含有多个通道时，对应的卷积核也应该有相同的通道数。假设输入图片的通道数为$C_{in}$，输入数据的形状是$C_{in}\times{H_{in}}\times{W_{in}}$。</p>
+<ol>
+<li>对每个通道分别设计一个2维数组作为卷积核，卷积核数组的形状是$C_{in}\times{k_h}\times{k_w}$。</li>
+<li>对任一通道$C_{in} \in [0, C_{in})$，分别用大小为$k_h\times{k_w}$的卷积核在大小为$H_{in}\times{W_{in}}$的二维数组上做卷积。</li>
+<li>将这$C_{in}$个通道的计算结果相加，得到的是一个形状为$H_{out}\times{W_{out}}$的二维数组。</li>
+</ol>
+<p><strong>应用实例</strong></p>
+<p>上面的例子中，卷积层的数据是一个2维数组，但实际上一张图片往往含有RGB三个通道，要计算卷积的输出结果，卷积核的形式也会发生变化。假设输入图片的通道数为$3$，输入数据的形状是$3\times{H_{in}}\times{W_{in}}$，计算过程如下图所示。</p>
+<ol>
+<li>对每个通道分别设计一个2维数组作为卷积核，卷积核数组的形状是$3\times{k_h}\times{k_w}$。</li>
+<li>对任一通道$c_{in} \in [0, 3)$，分别用大小为$k_h\times{k_w}$的卷积核在大小为$H_{in}\times{W_{in}}$的二维数组上做卷积。</li>
+<li>将这$3$个通道的计算结果相加，得到的是一个形状为$H_{out}\times{W_{out}}$的二维数组。</li>
+</ol>
+<p><img src="/image/image-20240317170631462.png" alt="image-20240317170631462"></p>
+<p><strong>多输出通道场景</strong></p>
+<p>如果我们希望检测多种类型的特征，实际上我们可以使用多个卷积核进行计算。所以一般来说，卷积操作的输出特征图也会具有多个通道$C_{out}$，这时我们需要设计$C_{out}$个维度为$C_{in}\times{k_h}\times{k_w}$的卷积核，卷积核数组的维度是$C_{out}\times C_{in}\times{k_h}\times{k_w}$。</p>
+<ol>
+<li>对任一输出通道$c_{out} \in [0, C_{out})$，分别使用上面描述的形状为$C_{in}\times{k_h}\times{k_w}$的卷积核对输入图片做卷积。</li>
+<li>将这$C_{out}$个形状为$H_{out}\times{W_{out}}$的二维数组拼接在一起，形成维度为$C_{out}\times{H_{out}}\times{W_{out}}$的三维数组。</li>
+</ol>
+<p><strong>应用示例</strong></p>
+<p>假设输入图片的通道数为3，我们希望检测2种类型的特征，这时我们需要设计$2$个维度为$3\times{k_h}\times{k_w}$的卷积核，卷积核数组的维度是$2\times 3\times{k_h}\times{k_w}$，如 <strong>图9</strong> 所示。</p>
+<ol>
+<li><p>对任一输出通道$c_{out} \in [0, 2)$，分别使用上面描述的形状为$3\times{k_h}\times{k_w}$的卷积核对输入图片做卷积。</p>
+</li>
+<li><p>将这$2$个形状为$H_{out}\times{W_{out}}$的二维数组拼接在一起，形成维度为$2\times{H_{out}}\times{W_{out}}$的三维数组。</p>
+</li>
+</ol>
+<p><strong>批量操作</strong></p>
+<p>在卷积神经网络的计算中，通常将多个样本放在一起形成一个mini-batch进行批量操作，即输入数据的维度是$N\times{C_{in}}\times{H_{in}}\times{W_{in}}$。由于会对每张图片使用同样的卷积核进行卷积操作，卷积核的维度是$C_{out}\times C_{in}\times{k_h}\times{k_w}$，那么，输出特征图的维度就是$N\times{C_{out}}\times{H_{out}}\times{W_{out}}$。</p>
+<p><strong>应用实例</strong></p>
+<p>假设我们输入数据的维度是$2\times{3}\times{H_{in}}\times{W_{in}}$，卷积核的维度与上面多输出通道的情况一样，仍然是$2\times 3\times{k_h}\times{k_w}$，输出特征图的维度是$2\times{2}\times{H_{out}}\times{W_{out}}$。如下图所示。<br><img src="/image/image-20240317171102717.png" alt="image-20240317171102717"></p>
+<h3 id="七、卷积优势"><a href="#七、卷积优势" class="headerlink" title="七、卷积优势"></a>七、卷积优势</h3><hr>
+<ul>
+<li><p><strong>保留空间信息</strong></p>
+<p>在卷积运算中，计算范围是在像素点的空间邻域内进行的，它代表了对空间邻域内某种特征模式的提取。对比全连接层将输入展开成一维的计算方式，卷积运算可以有效学习到输入数据的空间信息。</p>
+</li>
+<li><p><strong>局部连接</strong></p>
+<p>在上文中，我们介绍了感受野的概念，可以想像，在卷积操作中，每个神经元只与局部的一块区域进行连接。对于二维图像，局部像素关联性较强，这种局部连接保证了训练后的滤波器能够对局部特征有最强的响应，使神经网络可以提取数据的局部特征。全连接与局部连接的对比如图所示。<br><img src="/image/image-20240317171322099.png" alt="image-20240317171322099"><br>同时，由于使用了局部连接，隐含层的每个神经元仅与部分图像相连，此时的权重参数量将会大大减少。</p>
+</li>
+<li><p><strong>权重共享</strong></p>
+<p>卷积计算实际上是使用一组卷积核在图片上进行滑动，计算乘加和。因此，对于同一个卷积核的计算过程而言，在与图像计算的过程中，它的权重是共享的。这其实就大大降低了网络的训练难度。</p>
+</li>
+<li><p><strong>不同层级卷积提取不同特证</strong></p>
+<p>在CNN网络中，通常使用多层卷积进行堆叠，从而达到提取不同类型特征的作用。比如:浅层卷积提取的是图像中的边缘等信息；中层卷积提取的是图像中的局部信息；深层卷积提取的则是图像中的全局信息。这样，通过加深网络层数，CNN就可以有效地学习到图像从细节到全局的所有特征了。</p>
+</li>
+</ul>
+<h3 id="八、卷积应用示例"><a href="#八、卷积应用示例" class="headerlink" title="八、卷积应用示例"></a>八、卷积应用示例</h3><hr>
+<p><strong>案例1：图像中物体边缘检测</strong></p>
+<p>对于真实的图片，可以使用合适的卷积核，对其进行操作，用来检测物体的外形轮廓，观察输出特征图跟原图之间的对应关系。<br><img src="/image/image-20240317172421023.png" alt="image-20240317172421023" style="zoom:50%;"><br>卷积核：<br><img src="/image/image-20240317172440544.png" alt="image-20240317172440544" style="zoom:50%;"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">from</span> paddle.nn <span class="keyword">import</span> Conv2D</span><br><span class="line"><span class="keyword">from</span> paddle.nn.initializer <span class="keyword">import</span> Assign</span><br><span class="line">img = Image.<span class="built_in">open</span>(<span class="string">&#x27;./img/example1.jpg&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置卷积核参数</span></span><br><span class="line">w = np.array([[-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>], [-<span class="number">1</span>,<span class="number">8</span>,-<span class="number">1</span>], [-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>]], dtype=<span class="string">&#x27;float32&#x27;</span>)/<span class="number">8</span></span><br><span class="line">w = w.reshape([<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line"><span class="comment"># 由于输入通道数是3，将卷积核的形状从[1,1,3,3]调整为[1,3,3,3]</span></span><br><span class="line">w = np.repeat(w, <span class="number">3</span>, axis=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 创建卷积算子，输出通道数为1，卷积核大小为3x3，</span></span><br><span class="line"><span class="comment"># 并使用上面的设置好的数值作为卷积核权重的初始化参数</span></span><br><span class="line">conv = Conv2D(in_channels=<span class="number">3</span>, out_channels=<span class="number">1</span>, kernel_size=[<span class="number">3</span>, <span class="number">3</span>], </span><br><span class="line">            weight_attr=paddle.ParamAttr(</span><br><span class="line">              initializer=Assign(value=w)))</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 将读入的图片转化为float32类型的numpy.ndarray</span></span><br><span class="line">x = np.array(img).astype(<span class="string">&#x27;float32&#x27;</span>)</span><br><span class="line"><span class="comment"># 图片读入成ndarry时，形状是[H, W, 3]，</span></span><br><span class="line"><span class="comment"># 将通道这一维度调整到最前面</span></span><br><span class="line">x = np.transpose(x, (<span class="number">2</span>,<span class="number">0</span>,<span class="number">1</span>))</span><br><span class="line"><span class="comment"># 将数据形状调整为[N, C, H, W]格式</span></span><br><span class="line">x = x.reshape(<span class="number">1</span>, <span class="number">3</span>, img.height, img.width)</span><br><span class="line">x = paddle.to_tensor(x)</span><br><span class="line">y = conv(x)</span><br><span class="line">out = y.numpy()</span><br><span class="line">plt.figure(figsize=(<span class="number">20</span>, <span class="number">10</span>))</span><br><span class="line">f = plt.subplot(<span class="number">121</span>)</span><br><span class="line">f.set_title(<span class="string">&#x27;input image&#x27;</span>, fontsize=<span class="number">15</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">f = plt.subplot(<span class="number">122</span>)</span><br><span class="line">f.set_title(<span class="string">&#x27;output feature map&#x27;</span>, fontsize=<span class="number">15</span>)</span><br><span class="line">plt.imshow(out.squeeze(), cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="/image/image-20240317172523477.png" alt="image-20240317172523477" style="zoom:50%;">
+
+<h3 id="九、参考文献"><a href="#九、参考文献" class="headerlink" title="九、参考文献"></a>九、参考文献</h3><hr>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1311.2901.pdf">Visualizing and Understanding Convolutional Networks</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">王宝旭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/post/6f9885bb.html">http://example.com/post/6f9885bb.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/index.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/4a7877b0.html" title="1×1卷积"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">1×1卷积</div></div></a></div><div class="next-post pull-right"><a href="/post/5db12b2c.html" title="CNN中模型的参数量与FLOPs计算"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">CNN中模型的参数量与FLOPs计算</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">王宝旭</div><div class="author-info__description">欲戴王冠，必承其重</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">6</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RobertShaw-bot/"><i class="iconfont icon-youxishoubing"></i><span>Fllow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><b><font color="#e66b6d">努</font> <font color="#e66d98">力</font> <font color="#e66cc6">为</font> <font color="#cc6de6">计</font> <font color="#9770e6">算</font> <font color="#6d93e6">机</font> <font color="#6fcde6">事</font> <font color="#72e6b6">业</font> <font color="#72e689">添</font> <font color="#99e670">砖</font><font color="#cde670">加</font> <font color="#e6df72">瓦</font> <font color="#e6c073">！</font> <p align="center"><img src="https://haiyong.site/img/img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">邮箱：wangbaoxu0206@163.com</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%8D%B7%E7%A7%AF%E6%8F%90%E5%87%BA%E8%83%8C%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">一、卷积提出背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8D%B7%E7%A7%AF%E6%A0%B8%E3%80%81%E7%89%B9%E5%BE%81%E5%9B%BE%E3%80%81%E5%8D%B7%E7%A7%AF%E8%AE%A1%E7%AE%97"><span class="toc-number">2.</span> <span class="toc-text">二、卷积核、特征图、卷积计算</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A1%AB%E5%85%85%EF%BC%88Padding%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">三、填充（Padding）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%AD%A5%E9%95%BF%EF%BC%88Stride%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">四、步长（Stride）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%84%9F%E5%8F%97%E9%87%8E%EF%BC%88Receptive-Field%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">五、感受野（Receptive Field）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%A4%9A%E8%BE%93%E5%85%A5%E9%80%9A%E9%81%93%E3%80%81%E5%A4%9A%E8%BE%93%E5%87%BA%E9%80%9A%E9%81%93%E5%92%8C%E6%89%B9%E9%87%8F%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">六、多输入通道、多输出通道和批量操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%8D%B7%E7%A7%AF%E4%BC%98%E5%8A%BF"><span class="toc-number">6.</span> <span class="toc-text">七、卷积优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E5%8D%B7%E7%A7%AF%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">7.</span> <span class="toc-text">八、卷积应用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">8.</span> <span class="toc-text">九、参考文献</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/5afc00de.html" title="3D卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="3D卷积"/></a><div class="content"><a class="title" href="/post/5afc00de.html" title="3D卷积">3D卷积</a><time datetime="2024-03-17T11:21:35.000Z" title="Created 2024-03-17 19:21:35">2024-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/4a7877b0.html" title="1×1卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="1×1卷积"/></a><div class="content"><a class="title" href="/post/4a7877b0.html" title="1×1卷积">1×1卷积</a><time datetime="2024-03-17T10:33:27.000Z" title="Created 2024-03-17 18:33:27">2024-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6f9885bb.html" title="标准卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="标准卷积"/></a><div class="content"><a class="title" href="/post/6f9885bb.html" title="标准卷积">标准卷积</a><time datetime="2024-03-17T07:50:00.000Z" title="Created 2024-03-17 15:50:00">2024-03-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/5db12b2c.html" title="CNN中模型的参数量与FLOPs计算"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CNN中模型的参数量与FLOPs计算"/></a><div class="content"><a class="title" href="/post/5db12b2c.html" title="CNN中模型的参数量与FLOPs计算">CNN中模型的参数量与FLOPs计算</a><time datetime="2024-03-16T12:56:38.000Z" title="Created 2024-03-16 20:56:38">2024-03-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/f3eded28.html" title="池化技术"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="池化技术"/></a><div class="content"><a class="title" href="/post/f3eded28.html" title="池化技术">池化技术</a><time datetime="2024-03-16T12:54:10.000Z" title="Created 2024-03-16 20:54:10">2024-03-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/index.png')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2024 By 王宝旭</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
