@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>转置卷积 | 希予</title><meta name="author" content="王宝旭"><meta name="copyright" content="王宝旭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="转置卷积（Transpose Convolution）一、转置卷积提出背景通常情况下，对图像进行卷积运算时，经过多层的卷积运算后，输出图像的尺寸会变得很小，即图像被约减。而对于某些特定的任务（比如：图像分割、GAN），我们需要将图像恢复到原来的尺寸再进行进一步的计算。这个恢复图像尺寸，实现图像由小分辨率到大分辨率映射的操作，叫做上采样（Upsample），如 图1 所示。  图1 上采样示例 上采">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转置卷积">
+<meta property="og:url" content="http://example.com/post/92df3786.html">
+<meta property="og:site_name" content="希予">
+<meta property="og:description" content="转置卷积（Transpose Convolution）一、转置卷积提出背景通常情况下，对图像进行卷积运算时，经过多层的卷积运算后，输出图像的尺寸会变得很小，即图像被约减。而对于某些特定的任务（比如：图像分割、GAN），我们需要将图像恢复到原来的尺寸再进行进一步的计算。这个恢复图像尺寸，实现图像由小分辨率到大分辨率映射的操作，叫做上采样（Upsample），如 图1 所示。  图1 上采样示例 上采">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/img/index.png">
+<meta property="article:published_time" content="2024-03-18T03:47:15.000Z">
+<meta property="article:modified_time" content="2024-03-18T04:42:17.972Z">
+<meta property="article:author" content="王宝旭">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/index.png"><link rel="shortcut icon" href="/img/1.jpg"><link rel="canonical" href="http://example.com/post/92df3786.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '转置卷积',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-18 12:42:17'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/index.png')"><nav id="nav"><span id="blog-info"><a href="/" title="希予"><span class="site-name">希予</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">转置卷积</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-03-18T03:47:15.000Z" title="Created 2024-03-18 11:47:15">2024-03-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-03-18T04:42:17.972Z" title="Updated 2024-03-18 12:42:17">2024-03-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%B7%E7%A7%AF%E6%A8%A1%E5%9E%8B/">卷积模型</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%8D%B7%E7%A7%AF%E6%A8%A1%E5%9E%8B/%E5%8D%B7%E7%A7%AF%E7%AE%97%E5%AD%90/">卷积算子</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>12mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="转置卷积"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="转置卷积（Transpose-Convolution）"><a href="#转置卷积（Transpose-Convolution）" class="headerlink" title="转置卷积（Transpose Convolution）"></a>转置卷积（Transpose Convolution）</h1><h2 id="一、转置卷积提出背景"><a href="#一、转置卷积提出背景" class="headerlink" title="一、转置卷积提出背景"></a>一、转置卷积提出背景</h2><p>通常情况下，对图像进行卷积运算时，经过多层的卷积运算后，输出图像的尺寸会变得很小，即图像被约减。而对于某些特定的任务（比如：图像分割、GAN），我们需要将图像恢复到原来的尺寸再进行进一步的计算。这个恢复图像尺寸，实现图像由小分辨率到大分辨率映射的操作，叫做上采样（Upsample），如 <strong>图1</strong> 所示。</p>
+<p><img src="/image/image-20240318115128066.png" alt="image-20240318115128066"></p>
+<p>图1 上采样示例</p>
+<p>上采样有多种方式，常见的包括：<strong>最近邻插值、双线性插值</strong>等，但是这些上采样方法都是基于人们的先验经验来设计的，对于很多场景效果并不理想。因此，我们希望让神经网络自己学习如何更好地进行插值，这也就是接下来要介绍的<strong>转置卷积</strong>（Transpose Convolution）的方法。</p>
+<h2 id="二、转置卷积及其应用"><a href="#二、转置卷积及其应用" class="headerlink" title="二、转置卷积及其应用"></a>二、转置卷积及其应用</h2><p>转置卷积，在某些文献中也被称为反卷积（Deconvolution）。转置卷积中，不会使用预先设定的插值方法，它具有可学习的参数，通过让网络自行学习，来获取最优的上采样方式。转置卷积在某些特定的领域有着非常广泛的应用，比如：</p>
+<ul>
+<li>在<strong>DCGAN</strong><sup>[1]</sup>，生成器将会用随机值转变为一个全尺寸(full-size)的图片，这个时候就需要用到转置卷积。</li>
+<li>在<strong>语义分割</strong>中，会使用卷积层在编码器中进行特征提取，然后在解码层中进行恢复为原先的尺寸，这样才可以对原来图像的每个像素都进行分类。这个过程同样需要用到转置卷积。经典方法如：FCN<sup>[2]</sup>和Unet<sup>[3]</sup>。</li>
+<li><strong>CNN的可视化</strong><sup>[4]</sup>：通过转置卷积将CNN中得到的特征图还原到像素空间，以观察特定的特征图对哪些模式的图像敏感。</li>
+</ul>
+<h2 id="三、转置卷积与标准卷积的区别"><a href="#三、转置卷积与标准卷积的区别" class="headerlink" title="三、转置卷积与标准卷积的区别"></a>三、转置卷积与标准卷积的区别</h2><p>标准卷积的运算操作其实就是对卷积核中的元素与输入矩阵上对应位置的元素进行逐像素的乘积并求和。然后使用卷积核在输入矩阵上以步长为单位进行滑动，直到遍历完输入矩阵的所有位置。</p>
+<p>这里举一个简单的例子演示一下具体的操作过程。假设输入是一个$4\times{4}$的矩阵，使用$3\times{3}$的标准卷积进行计算，同时不使用填充，步长设置为1。最终输出的结果应该是一个$2\times{2}$的矩阵，如 <strong>图2</strong> 所示。</p>
+<img src="/image/image-20240318115615439.png" alt="image-20240318115615439" style="zoom:50%;">
+
+<p>图2 标准卷积运算示例</p>
+<p>在上边的例子中，输入矩阵右上角$3\times{3}$的值会影响输出矩阵中右上角的值，这其实也就对应了标准卷积中<strong>感受野</strong>的概念。所以，我们可以说$3\times{3}$的标准卷积核建立了输入矩阵中9个值与输出矩阵中1个值的对应关系。</p>
+<p><strong>综上所述，我们也就可以认为标准卷积操作实际上就是建立了一个多对一的关系。</strong></p>
+<p>对于转置卷积而言，我们实际上是想建立一个逆向操作，也就是建立一个一对多的关系。对于上边的例子，我们想要建立的其实是输出卷积中的1个值与输入卷积中的9个值的关系，如 <strong>图3</strong> 所示。</p>
+<img src="/image/image-20240318115707610.png" alt="image-20240318115707610" style="zoom:50%;">
+
+<p>图3 卷积逆向运算示例</p>
+<p>当然，从信息论的角度，卷积操作是不可逆的，<strong>所以转置卷积并不是使用输出矩阵和卷积核计算原始的输入矩阵，而是计算得到保持了相对位置关系的矩阵</strong>。</p>
+<h2 id="四、转置卷积数学推导"><a href="#四、转置卷积数学推导" class="headerlink" title="四、转置卷积数学推导"></a>四、转置卷积数学推导</h2><p>定义一个尺寸为$4\times{4}$ 的输入矩阵 $input$:</p>
+<p>$$<br>input&#x3D;\left[\begin{array}{ccc}<br>x_1 &amp; x_2 &amp; x_3 &amp; x_4 \<br>x_6 &amp; x_7 &amp; x_8 &amp; x_9 \<br>x_{10} &amp; x_{11} &amp; x_{12} &amp; x_{13} \<br>x_{14} &amp; x_{15} &amp; x_{16} &amp; x_{17}<br>\end{array}\right]<br>$$<br>一个尺寸为$3\times{3}$ 的标准卷积核 $kernel$:</p>
+<p>$$<br>kernel&#x3D;\left[\begin{array}{ccc}<br>w_{0,0} &amp; w_{0,1} &amp; w_{0,2} \<br>w_{1,0} &amp; w_{1,1} &amp; w_{1,2} \<br>w_{2,0} &amp; w_{2,1} &amp; w_{2,2}<br>\end{array}\right]<br>$$</p>
+<p>令步长 $stride&#x3D;1$，填充$padding&#x3D;0$，按照输出特征图的计算方式$o &#x3D; \frac{i + 2p - k}{s} + 1$，我们可以得到尺寸为 $2\times{2}$  的输出矩阵 $output$ ：</p>
+<p>$$<br>output&#x3D;\left[\begin{array}{ccc}<br>y_0 &amp; y_1 \<br>y_2 &amp; y_3<br>\end{array}\right]<br>$$<br>这里，我们换一个表达方式，我们将输入矩阵 $ input$ 和输出矩阵 $output$ 展开成列向量$X$ 和列向量$Y$ ，那么向量$X$ 和向量$Y$ 的尺寸就分别是$16\times{1}$ 和$4\times{1}$，可以分别用如下公式表示：</p>
+<p>$$<br>X&#x3D;\left[\begin{array}{ccc}<br>x_1 \ x_2 \ x_3 \ x_4 \<br>x_6 \ x_7 \ x_8 \ x_9 \<br>x_{10} \ x_{11} \ x_{12} \ x_{13} \<br>x_{14} \ x_{15} \ x_{16} \ x_{17}<br>\end{array}\right]<br>$$</p>
+<p>$$<br>Y&#x3D;\left[\begin{array}{ccc}<br>y_0 \ y_1 \<br>y_2 \ y_3<br>\end{array}\right]<br>$$</p>
+<p>我们再用矩阵运算来描述标准卷积运算，这里使用矩阵$C$ 来表示新的卷积核矩阵：</p>
+<p>$$<br>Y &#x3D; CX<br>$$<br>经过推导，我们可以得到这个稀疏矩阵$C$，它的尺寸为$4\times{16}$：</p>
+<p>$$<br>\scriptsize{<br>C&#x3D;\left[\begin{array}{ccc}<br>w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2}<br>\end{array}\right]<br>}<br>$$<br>而转置卷积其实就是要对这个过程进行逆运算，即通过 $C$ 和 $Y$ 得到 $X$ </p>
+<p>$$<br>X &#x3D; C^TY<br>$$<br>此时，新的稀疏矩阵就变成了尺寸为$16\times{4}$ 的$C^T$，用来进行转置卷积的权重矩阵不一定来自于原卷积矩阵. 只是权重矩阵的形状和转置后的卷积矩阵相同。</p>
+<p>我们再将$16\times{1}$ 的输出结果进行重新排序，这样就可以通过尺寸为$2\times{2}$ 的输入矩阵得到尺寸为$4\times{4}$ 的输出矩阵了。</p>
+<h2 id="五、转置卷积输出特征图尺寸"><a href="#五、转置卷积输出特征图尺寸" class="headerlink" title="五、转置卷积输出特征图尺寸"></a>五、转置卷积输出特征图尺寸</h2><ul>
+<li><strong>stride&#x3D;1的转置卷积</strong></li>
+</ul>
+<p>我们同样使用上文中的卷积核矩阵$C$：</p>
+<p>$$<br>\scriptsize{<br>C&#x3D;\left[\begin{array}{ccc}w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 &amp; 0 &amp; 0 &amp; 0 \0 &amp; 0 &amp; 0 &amp; 0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2} &amp; 0 \0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; w_{0,0} &amp; w_{0,1} &amp; w_{0,2} &amp; 0 &amp; w_{1,0} &amp; w_{1,1} &amp; w_{1,2} &amp; 0 &amp; w_{2,0} &amp; w_{2,1} &amp; w_{2,2}  \end{array}\right]<br>}<br>$$<br>对应的输出矩阵 $output$ 为 ：</p>
+<p>$$<br>output&#x3D;\left[\begin{array}{ccc}y_0 &amp; y_1 \y_2 &amp; y_3\end{array}\right]<br>$$<br>我们将输出矩阵展开为列向量$Y$ ：</p>
+<p>$$<br>Y&#x3D;\left[\begin{array}{ccc}y_0 \ y_1 \y_2 \ y_3\end{array}\right]<br>$$<br>带入到上文中提到的转置卷积计算公式，则转置卷积的计算结果为：</p>
+<p>$$<br>\scriptsize{<br>C^Ty’&#x3D;<br>\left[\begin{array}{ccc}<br>w_{0,0}y_0 &amp; w_{0,1}y_0+w_{0,0}y_1 &amp; w_{0,2}y_0+w_{0,1}y_1 &amp; w_{0,2}y_1 \<br>w_{1,0}y_0+w_{0,0}y_2 &amp; w_{1,1}y_0+w_{1,0}y_1+w_{0,1}y_2+w_{0,0}y_3 &amp; w_{1,2}y_0+w_{1,1}y_1+w_{0,2}y_2+w_{0,1}y_3 &amp; w_{1,2}y_1+w_{0,2}y_3 \<br>w_{2,0}y_0+w_{1,0}y_2 &amp; w_{2,1}y_0+w_{2,0}y_1+w_{1,1}y_2+w_{1,0}y_3 &amp; w_{2,2}y_0+w_{2,1}y_1+w_{1,2}y_2+w_{1,1}y_3 &amp; w_{2,2}y_1+w_{1,2}y_3 \<br>w_{2,0}y_2 &amp; w_{2,1}y_2+w_{2,0}y_3 &amp; w_{2,2}y_2+w_{2,1}y_3 &amp; w_{2,2}y_3<br>\end{array}\right]<br>}<br>$$<br>这其实就等价于填充 $padding&#x3D;2$，输入为：</p>
+<p>$$<br>input&#x3D;\left[\begin{array}{ccc}<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; y_0 &amp; y_1 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; y_2 &amp; y_3 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0<br>\end{array}\right]<br>$$<br>同时，标准卷积核进行转置：</p>
+<p>$$<br>kernel‘&#x3D;\left[\begin{array}{ccc}<br>w_{2,2} &amp; w_{2,1} &amp; w_{2,0} \<br>w_{1,2} &amp; w_{1,1} &amp; w_{1,0} \<br>w_{0,2} &amp; w_{0,1} &amp; w_{0,0}<br>\end{array}\right]<br>$$<br>之后的标准卷积的结果，运算过程如 <strong>图4</strong> 所示。</p>
+<p><img src="/image/Transpose_Convolution_s1.gif" alt="图6 s=1时，转置卷积运算示例"></p>
+<p>图4 s&#x3D;1时，转置卷积运算示例</p>
+<p>对于卷积核尺寸为 $k$，步长 $stride&#x3D;1$，填充 $padding&#x3D;0$ 的标准卷积，等价的转置卷积在尺寸为 $ i’$ 的输入矩阵上进行运算，输出特征图的尺寸 $ o’$ 为：</p>
+<p>$$<br>o’ &#x3D; i’+(k-1)<br>$$<br>同时，转置卷积的输入矩阵需要进行 $padding’&#x3D;k-1$ 的填充。</p>
+<ul>
+<li><strong>stride&gt;1的转置卷积</strong></li>
+</ul>
+<p>在实际使用的过程中，我们大多数时候使用的会是stride&gt;1的转置卷积，从而获得较大的上采样倍率。这里，我们令输入尺寸为$5\times{5}$，标准卷积核的设置同上，步长 $stride&#x3D;2$，填充 $padding&#x3D;0$，标准卷积运算后，输出尺寸为$2\times{2}$。</p>
+<p>$$<br>Y&#x3D;\left[\begin{array}{ccc}y_0 \ y_1 \y_2 \ y_3\end{array}\right]<br>$$<br>这里，步长$stride&#x3D;2$，转换后的稀疏矩阵尺寸变为$25\times{4}$，由于矩阵太大这里不展开进行罗列。则转置卷积的结果为：</p>
+<p>$$<br>\scriptsize{<br>C^Ty’&#x3D;\left[\begin{array}{ccc}<br>w_{0,0}y_0 &amp; w_{0,1}y_0 &amp; w_{0,2}y_0+w_{0,0}y_1 &amp; w_{0,1}y_1 &amp; w_{0,2}y_1\<br>w_{1,0}y_0 &amp; w_{1,1}y_0 &amp; w_{1,2}y_0+w_{1,0}y_1 &amp; w_{1,1}y_1 &amp; w_{1,2}y_1\<br>w_{2,0}y_0+w_{0,0}y_2 &amp; w_{2,1}y_0+w_{0,1}y_2 &amp; w_{2,2}y_0+w_{2,0}y_1+w_{0,2}y_2+w_{0,0}y_3 &amp; w_{2,1}y_1+w_{0,1}y_3 &amp; w_{2,2}y_1+w_{0,2}y_3\<br>w_{1,0}y_2 &amp; w_{1,1}y_2 &amp; w_{1,2}y_2+w_{1,0}y_3 &amp; w_{1,1}y_3 &amp; w_{1,2}y_3\<br>w_{2,0}y_2 &amp; w_{2,1}y_2 &amp; w_{2,2}y_2+w_{2,0}y_3 &amp; w_{2,1}y_3 &amp; w_{2,2}y_3\<br>\end{array}\right]<br>}<br>$$<br>此时，等价于输入矩阵添加了空洞，同时也添加了填充，标准卷积核进行转置之后的运算结果。运算过程如 <strong>图5</strong> 所示。</p>
+<p><img src="/image/Transpose_Convolution_s2.gif" alt="图7 s&gt;1时，转置卷积运算示例"></p>
+<p>图5 s&gt;1时，转置卷积运算示例</p>
+<p>对于卷积核尺寸为 $k$，步长 $stride&gt;1$，填充 $padding&#x3D;0$ 的标准卷积，等价的转置卷积在尺寸为 $ i’$ 的输入矩阵上进行运算，输出特征图的尺寸 $ o’$ 为：</p>
+<p>$$<br>o’ &#x3D; s(i’-1)+k<br>$$<br>同时，转置卷积的输入矩阵需要进行 $padding’&#x3D;k-1$ 的填充，相邻元素间的空洞大小为 $s-1$。因此，可以通过控制步长 $stride$ 来控制上采样倍率。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1511.06434.pdf">Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://www.cv-foundation.org/openaccess/content_cvpr_2015/html/Long_Fully_Convolutional_Networks_2015_CVPR_paper.html">Fully Convolutional Networks for Semantic Segmentation</a></p>
+<p>[3] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1505.04597.pdf">U-Net: Convolutional Networks for Biomedical Image Segmentation</a></p>
+<p>[4] <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1311.2901v2.pdf">Visualizing and Understanding Convolutional Networks</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">王宝旭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/post/92df3786.html">http://example.com/post/92df3786.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/index.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/7483442b.html" title="空洞卷积"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">空洞卷积</div></div></a></div><div class="next-post pull-right"><a href="/post/5afc00de.html" title="3D卷积"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">3D卷积</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">王宝旭</div><div class="author-info__description">欲戴王冠，必承其重</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RobertShaw-bot/"><i class="iconfont icon-youxishoubing"></i><span>Fllow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><b><font color="#e66b6d">努</font> <font color="#e66d98">力</font> <font color="#e66cc6">为</font> <font color="#cc6de6">计</font> <font color="#9770e6">算</font> <font color="#6d93e6">机</font> <font color="#6fcde6">事</font> <font color="#72e6b6">业</font> <font color="#72e689">添</font> <font color="#99e670">砖</font><font color="#cde670">加</font> <font color="#e6df72">瓦</font> <font color="#e6c073">！</font> <p align="center"><img src="https://haiyong.site/img/img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">邮箱：wangbaoxu0206@163.com</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%EF%BC%88Transpose-Convolution%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">转置卷积（Transpose Convolution）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E6%8F%90%E5%87%BA%E8%83%8C%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">一、转置卷积提出背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">二、转置卷积及其应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E4%B8%8E%E6%A0%87%E5%87%86%E5%8D%B7%E7%A7%AF%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.</span> <span class="toc-text">三、转置卷积与标准卷积的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E6%95%B0%E5%AD%A6%E6%8E%A8%E5%AF%BC"><span class="toc-number">1.4.</span> <span class="toc-text">四、转置卷积数学推导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E8%BD%AC%E7%BD%AE%E5%8D%B7%E7%A7%AF%E8%BE%93%E5%87%BA%E7%89%B9%E5%BE%81%E5%9B%BE%E5%B0%BA%E5%AF%B8"><span class="toc-number">1.5.</span> <span class="toc-text">五、转置卷积输出特征图尺寸</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">1.6.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/86838a9d.html" title="可变形卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可变形卷积"/></a><div class="content"><a class="title" href="/post/86838a9d.html" title="可变形卷积">可变形卷积</a><time datetime="2024-03-18T05:16:04.000Z" title="Created 2024-03-18 13:16:04">2024-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/6bbef2a3.html" title="可分离卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="可分离卷积"/></a><div class="content"><a class="title" href="/post/6bbef2a3.html" title="可分离卷积">可分离卷积</a><time datetime="2024-03-18T04:58:39.000Z" title="Created 2024-03-18 12:58:39">2024-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/a0902d7a.html" title="分组卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="分组卷积"/></a><div class="content"><a class="title" href="/post/a0902d7a.html" title="分组卷积">分组卷积</a><time datetime="2024-03-18T04:44:45.000Z" title="Created 2024-03-18 12:44:45">2024-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/7483442b.html" title="空洞卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="空洞卷积"/></a><div class="content"><a class="title" href="/post/7483442b.html" title="空洞卷积">空洞卷积</a><time datetime="2024-03-18T04:26:58.000Z" title="Created 2024-03-18 12:26:58">2024-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/92df3786.html" title="转置卷积"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="转置卷积"/></a><div class="content"><a class="title" href="/post/92df3786.html" title="转置卷积">转置卷积</a><time datetime="2024-03-18T03:47:15.000Z" title="Created 2024-03-18 11:47:15">2024-03-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/index.png')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2024 By 王宝旭</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
