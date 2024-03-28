@@ -1,0 +1,389 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>推荐系统的评估指标 | 希予</title><meta name="author" content="王宝旭"><meta name="copyright" content="王宝旭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="推荐系统评估指标场景转化指标场景转化指标是将用户从一个场景转化到我们希望的场景的效果。这个过程主要是对用户的行为进行分析，这类指标关注推荐系统的漏斗效果，主要有： pv点击率PV(访问量)：PageView,即页面浏览量或点击量，用户每次刷新即被计算一次。 $$pv点击率&#x3D;\frac{pv点击}{pv}$$ pv点击率是比较经典的指标，计算用户每次进入页面的情况。他能粗略衡量转化的效果，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐系统的评估指标">
+<meta property="og:url" content="http://example.com/post/c619fa62.html">
+<meta property="og:site_name" content="希予">
+<meta property="og:description" content="推荐系统评估指标场景转化指标场景转化指标是将用户从一个场景转化到我们希望的场景的效果。这个过程主要是对用户的行为进行分析，这类指标关注推荐系统的漏斗效果，主要有： pv点击率PV(访问量)：PageView,即页面浏览量或点击量，用户每次刷新即被计算一次。 $$pv点击率&#x3D;\frac{pv点击}{pv}$$ pv点击率是比较经典的指标，计算用户每次进入页面的情况。他能粗略衡量转化的效果，">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/img/index.png">
+<meta property="article:published_time" content="2024-03-27T07:15:51.000Z">
+<meta property="article:modified_time" content="2024-03-27T08:02:18.724Z">
+<meta property="article:author" content="王宝旭">
+<meta property="article:tag" content="推荐系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/index.png"><link rel="shortcut icon" href="/img/1.jpg"><link rel="canonical" href="http://example.com/post/c619fa62.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '推荐系统的评估指标',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-27 16:02:18'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/index.png')"><nav id="nav"><span id="blog-info"><a href="/" title="希予"><span class="site-name">希予</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">推荐系统的评估指标</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-03-27T07:15:51.000Z" title="Created 2024-03-27 15:15:51">2024-03-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-03-27T08:02:18.724Z" title="Updated 2024-03-27 16:02:18">2024-03-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">6.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>20mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="推荐系统的评估指标"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="推荐系统评估指标"><a href="#推荐系统评估指标" class="headerlink" title="推荐系统评估指标"></a>推荐系统评估指标</h1><h2 id="场景转化指标"><a href="#场景转化指标" class="headerlink" title="场景转化指标"></a>场景转化指标</h2><p>场景转化指标是将用户从一个场景转化到我们希望的场景的效果。这个过程主要是对用户的行为进行分析，这类指标关注推荐系统的漏斗效果，主要有：</p>
+<h3 id="pv点击率"><a href="#pv点击率" class="headerlink" title="pv点击率"></a>pv点击率</h3><p>PV(访问量)：PageView,即页面浏览量或点击量，用户每次刷新即被计算一次。</p>
+<p>$$pv点击率&#x3D;\frac{pv点击}{pv}$$</p>
+<p>pv点击率是比较经典的指标，计算用户每次进入页面的情况。他能粗略衡量转化的效果，但是它缺点也比较明显：少数用户贡献大量点击会影响这个指标的作用效果。</p>
+<h3 id="uv点击率"><a href="#uv点击率" class="headerlink" title="uv点击率"></a>uv点击率</h3><p>UV(独立访客)：Unique Visitor,访问您网站的一台电脑客户端为一个访客。00:00-24:00内相同的客户端只会被计算一次。</p>
+<p>$$uv点击率&#x3D;\frac{点击uv}{整个产品的uv}$$</p>
+<p>分母是整个产品的uv,而不是有点击行为的uv。uv点击率相对于pv点击率的优势在于，它不受用户行为路径影响（不受重复浏览某个产品的影响），能记录用户在一个完整session的点击效果。据了解好多互联网公司的分析指标也将pv点击率给为uv点击率了</p>
+<h3 id="曝光点击率"><a href="#曝光点击率" class="headerlink" title="曝光点击率"></a>曝光点击率</h3><p>$$ 曝光点击率&#x3D;\frac{点击量}{曝光次数}$$</p>
+<p>曝光点击率适合支持上拉、下拉翻页的产品。相比pv点击率，曝光点击率随用户刷屏次数增大而变大，能更真实记录每一屏的转化情况。</p>
+<h3 id="uv转化率"><a href="#uv转化率" class="headerlink" title="uv转化率"></a>uv转化率</h3><p>转化率：指在一个统计周期内，完成转化行为的次数占推广信息总点击次数的比率。</p>
+<p>$$uv转化率&#x3D;\frac{点击uv}{进入uv}$$</p>
+<p>与uv转化率相对的是页面流失率。uv转化率衡量对用户的转化情况，通过我们的产品设计能把多大比例的用户从一个场景转化到我们希望的另一个场景里面去。uv转化率相对于前面两个指标，更靠得住，不容易受到挑战。</p>
+<p>uv转化率尤其衡量入口型产品，比如视频app的首页，如果用uv点击率去衡量就不太科学，因为一般用户在首页点击某个视频后，会进入下一层页面深度消费，很少会返回首页继续消费，这个用户已经被转化，但不再贡献点击，所以uv转化率更加合理。</p>
+<p>如果某页面的转化率较低，则表示大部分人对该页面不感兴趣，遵循“不行就分”的简单原则，这样的页面去掉可能对产品更好。</p>
+<h3 id="人均点击次数"><a href="#人均点击次数" class="headerlink" title="人均点击次数"></a>人均点击次数</h3><p>$$人均点击次数&#x3D;\frac{点击量}{点击uv}$$</p>
+<p>人均点击次数与uv转化率相辅相成。uv转化率表示页面的消费宽度（吸引用户的比例），而人均点击次数表示页面的消费深度（每个用户的消费的次数）。</p>
+<h2 id="消费满意度"><a href="#消费满意度" class="headerlink" title="消费满意度"></a>消费满意度</h2><h3 id="留存率"><a href="#留存率" class="headerlink" title="留存率"></a>留存率</h3><p>$$留存率&#x3D;\frac{x日后仍活跃的用户数}{x日前的用户数}$$</p>
+<p>留存率很重要，每家公司都很重视，但它很艰难作为算法的优化指标，因为时间周期长，变量会很多。比如计算视频app首页的留存率就十分艰难，因为当中可能会上线大剧；和热门综艺。虽然难以衡量，但留存率是产品技术团队的重要指标：市场部负责拉新用户，产品技术团队负责服务用户，把客户留下来。</p>
+<h3 id="停留时间长"><a href="#停留时间长" class="headerlink" title="停留时间长"></a>停留时间长</h3><p>内容消费型产品，点击率很难反应推荐的真正效果，把用户骗进了希望的场景消费，但是发现真相的用户转身就走，这反而说明这个推荐是失败的。所以需要引入停留时长来量化用户消费效果。音频类的就对应播放时长。</p>
+<h3 id="播放完成率"><a href="#播放完成率" class="headerlink" title="播放完成率"></a>播放完成率</h3><p>$$播放完成率&#x3D;\frac{播放时长}{视频时长}$$</p>
+<p>由于停留时长受视频时长的锚定效应影响，稍长一点的视频，即使用户不感兴趣，但是平均来说也会比短视频要停留更长一些。因此，播放完成指标就能一定程度上去弥补这个问题，但是短视频天然的完成率要比长视频高，也是需要在看指标时注意。</p>
+<h2 id="离线评估验证方法"><a href="#离线评估验证方法" class="headerlink" title="离线评估验证方法"></a>离线评估验证方法</h2><h3 id="Holdout检验"><a href="#Holdout检验" class="headerlink" title="Holdout检验"></a>Holdout检验</h3><p>Holdout检验是基础的离线评估方法，它将原始的样本集合随机划分为训练集和验证集两部分，比如70%训练集，30%测试集（但现在很多机器学习框架、深度学习框架中都增加了验证集，即将整个数据集分成三份，70%训练集，10%验证集，20%测试集）。</p>
+<p>Holdout检验的缺点也很明显，即在验证集上计算出来的评估指标与训练集和测试机的划分有直接关系，如果仅进行少量Holdout检验，则得到的结论存在很大的随机性（在划分数据集的时候尽量保证其随机性）。</p>
+<h3 id="交叉检验"><a href="#交叉检验" class="headerlink" title="交叉检验"></a>交叉检验</h3><h4 id="k-fold交叉验证"><a href="#k-fold交叉验证" class="headerlink" title="k-fold交叉验证"></a>k-fold交叉验证</h4><p>先将全部样本划分成 k个大小相等的样本子集，依次遍历这k个子集，每次都把当前子集作为验证集，其余所有子集作为训练集，进行模型的训练和评估，最后将所有次的评估指标的平均值作为最终的评估指标，在实际经验中， 经常取值为 10。</p>
+<h4 id="留一验证"><a href="#留一验证" class="headerlink" title="留一验证"></a>留一验证</h4><p>每次留下1个样本作为验证集，其余所有样本作为测试集，样本总数为n，依次遍历所有n个样本，进行n次验证，再将评估指标求平均得到最终指标。在样本总数较多的情况下，留一验证法的时间开销极大，事实上，留一验证是留p验证的特例，留p验证是指每次留下p个样本作为验证集，而从n个元素中选择 p个元素 有 $C_{n}^p$种可能，因此它的时间开销远远高于留一验证，故很少在实际中使用。</p>
+<h4 id="自助法"><a href="#自助法" class="headerlink" title="自助法"></a>自助法</h4><p>不管是holdout检验还是交叉检验，都是基于划分训练集和测试集的方法进行模型评估的，当样本规模比较小时，将样本集进行划分，会进一步缩小训练集，有影响模型的训练效果。</p>
+<p>自助法（Bootstrap）是基于自助采样法的检验方法：对于总数为n的样本集合，进行n次有放回的随机抽样，得到大小为n的训练集，在n次采样过程中，有的样本会被重复采样，有的样本没有被抽出过，将这些没有被抽出的样本作为验证集进行模型验证，就是自助法的验证过程。</p>
+<h2 id="离线评估的主要指标"><a href="#离线评估的主要指标" class="headerlink" title="离线评估的主要指标"></a>离线评估的主要指标</h2><p>离线评估是针对系统自身的推荐算法模型的评估，通过评估具体指标来选择合适的推荐算法；推荐系统从接收数据到产生推荐结果，再根据结果的硬性从新修改参数，而这个过程是通过机器学习训练得出的模型主要有以下评估指标：</p>
+<h3 id="准确率"><a href="#准确率" class="headerlink" title="准确率"></a>准确率</h3><p>分类准确率是指分类正确的样本占总样本个数的比例：</p>
+<p>$$accuracy&#x3D;\frac{n_{correct}}{n_{total}}$$</p>
+<p>$n_{correct}$为被正确分类的样本个数，$n_{total}$为总样本个数，准确率是分类任务中比较直观的评价指标，但其优缺点也明显。</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>解释性强</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>类别分布不均匀时，占比大的类别往往成为影响准确率的主要因素（极端的情况比如正样本 1%，负样本 99%时）</li>
+</ul>
+<h3 id="精确率和召回率"><a href="#精确率和召回率" class="headerlink" title="精确率和召回率"></a>精确率和召回率</h3><ul>
+<li><p>精确率（Precision）是分类正确的正样本个数占分类器判定为正样本的样本个数的比例</p>
+</li>
+<li><p>召回率（Recall）是分类正确的正样本个数占真正正样本个数的比例</p>
+</li>
+</ul>
+<p>排序模型中，通常没有一个确定的阈值把预测结果直接判定为正样本还是负样本，而是采用 Top N 排序结果的精确率（Precision@N）和召回率（Recall@N）来衡量排序模型的性能，即认为模型排序的Top N的结果就是模型排定的正样本，然后计算精确率和召回率。</p>
+<p>精确率和召回率是矛盾统一的两个指标：为了提高精确率，分类器需要尽量再“更有把握时”才把样本预测为正样本，但往往因为过于保守而漏掉很多“没有把握”的正样本，导致召回率降低。</p>
+<p>因此使用F1-score进行调和（也叫F-measure），定义为：</p>
+<p>$$F1&#x3D;\frac{2<em>Precision</em>Recall}{Precision+Recall}$$</p>
+<h3 id="均方根误差"><a href="#均方根误差" class="headerlink" title="均方根误差"></a>均方根误差</h3><p>Root Mean Square Error，RMSE 经常被用来衡量回归模型的好坏，使用点击率预估模型构建推荐系统时，推荐系统预测的其实是样本为正样本的概率，RMSE被定义为：</p>
+<p>$$RMSE&#x3D;\sqrt{\frac{1}{n}\sum_{i&#x3D;1}^n(y_{i}-y_{pred})}$$</p>
+<p>$y_{i}$是第i个样本的真实值，$y_{pred}$是第i个样本的预测值，n为样本的个数。</p>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>一般情况下能够很好的反映回归模型预测值与真实值的偏离程度，但在实际应用时，如果存在个别偏离程度非常大的离群点，那么即使离群点的数量非常少，也会让RMSE指标变得很差</p>
+<p>为了解决这个问题，引入了鲁棒性更强的平均绝对百分比误差（Mean Absolute Percent Error，MAPE）进行类似的评估，MAPE定义如下：</p>
+<p>$$MAPE&#x3D;\sum_{i&#x3D;1}^n |\frac{y_{i}-y_{pred}}{y_{i}}|*\frac{100}{n}$$</p>
+<p>相比RMSE，MAPE相当于把每个点的误差进行了归一化，降低了个别离群点带来的绝对误差的影响。</p>
+<h3 id="对数损失函数"><a href="#对数损失函数" class="headerlink" title="对数损失函数"></a>对数损失函数</h3><p>LogLoss，在一个二分类问题中，LogLoss定义为：</p>
+<p>$$LogLoss&#x3D;-\frac{1}{N}\sum_{i&#x3D;1}^N(y_{i}logP_{i}+(1-y_{i})log(1-P_{i}))$$</p>
+<p>其中$y_{i}$为输入实例$x_{i}$的真实类别，$p_{i}$为预测输入实例$x_{i}$是正样本的概率，N为样本总数。</p>
+<p>LogLoss 是逻辑回归的损失函数，大量深度学习模型的输出层是逻辑回归或softmax，因此采用LogLoss作为评估指标能够非常直观的反映模型损失函数的变化，站在模型的角度来讲，LogLoss非常适于观察模型的收敛情况。</p>
+<h3 id="P-R曲线"><a href="#P-R曲线" class="headerlink" title="P-R曲线"></a>P-R曲线</h3><p>P-R曲线的横轴是召回率，纵轴是精确率，对于一个排序模型来说，其P-R曲线上的一个点代表在某一阈值下，模型将大于该阈值的结果判定为正样本，将小于该阈值的结果判定为负样本时，排序结果对应的召回率和精确率</p>
+<p>整体P-R曲线是通过从高到低移动正样本阈值生成的，如下所示：</p>
+<p><img src="/image/precision_recall.png"></p>
+<p>P-R曲线下的面积（Area Under Curve， AUC）能够量化P-R曲线的优劣，AUC越大，排序模型的性能越好。</p>
+<h3 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h3><p>ROC曲线的全称时 the Receiver Operating Characteristic曲线，中文译为「受试者工作特征曲线」，ROC曲线最早诞生于军事领域，而后在医学领域应用甚广，「受试者工作特征曲线」也来源于该领域。</p>
+<p>ROC曲线的横坐标时 False Posotive Rate（FPR， 假阳性率），纵坐标时True Positive Rate（TPR，真阳性率），FPR和TPR的计算方法如下：</p>
+<p>$$FPR&#x3D;\frac{FP}{N}$$<br>$$TPR&#x3D;\frac{TP}{P}$$</p>
+<p>上式中P是真实的正样本数量，N是真实的负样本数量，TP指的是P个正样本中被分类器预测为正样本的个数，FP指的是N个负样本中被分类器预测为正样本的个数。</p>
+<p>ROC曲线的绘制和P-R曲线一样，通过不断移动模型正样本阈值生成的，ROC曲线下的面积就是AUC</p>
+<h3 id="平均精度均值"><a href="#平均精度均值" class="headerlink" title="平均精度均值"></a>平均精度均值</h3><p>平均精度均值（Mean Average Precision，mAP）是另一个在推荐系统、信息检索领域常用的评估指标，该指标其实是对平均精度（Average Precision，AP）的再次平均。</p>
+<p>假设推荐系统对某一用户测试集的排序结果如下所示：</p>
+<table>
+<thead>
+<tr>
+<th>推荐序列</th>
+<th>N&#x3D;1</th>
+<th>N&#x3D;2</th>
+<th>N&#x3D;3</th>
+<th>N&#x3D;4</th>
+<th>N&#x3D;5</th>
+<th>N&#x3D;6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>真实标签</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p>其中，1代表正样本，0代表负样本</p>
+<p>那么对于上述的序列，precision@N分别是多少呢？</p>
+<table>
+<thead>
+<tr>
+<th>推荐序列</th>
+<th>N&#x3D;1</th>
+<th>N&#x3D;2</th>
+<th>N&#x3D;3</th>
+<th>N&#x3D;4</th>
+<th>N&#x3D;5</th>
+<th>N&#x3D;6</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>真实标签</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>precision@N</td>
+<td>1&#x2F;1</td>
+<td>1&#x2F;2</td>
+<td>1&#x2F;3</td>
+<td>2&#x2F;4</td>
+<td>3&#x2F;5</td>
+<td>4&#x2F;6</td>
+</tr>
+</tbody></table>
+<p>AP的计算只取正样本处的precision进行平均，即 AP&#x3D; (1&#x2F;1 + 2&#x2F;4 + 3&#x2F;5 + 4&#x2F;6) &#x3D;0.6917</p>
+<p>那么mAP是什么呢？</p>
+<p>如果推荐系统对测试集中的每个用户都进行样本排序，那么每个用户都会计算出一个AP值，再对所有用户的AP值进行平均，就得到了mAP，也就是mAP是对精确度平均的平均。</p>
+<p>需要注意的是，mAP的计算和P-R曲线、ROC曲线的计算方法完全不同，因为mAP需要对每个每个用户的样本进行分用户排序，而P-R曲线和ROC曲线均是对全量测试样本进行排序。</p>
+<h3 id="NDCG"><a href="#NDCG" class="headerlink" title="NDCG"></a>NDCG</h3><h4 id="CG"><a href="#CG" class="headerlink" title="CG"></a>CG</h4><p>CG，cumulative，是DCG的前身，只考虑到了相关性的关联程度，没有考虑到位置的因素，它是一个搜索结果相关性分数的综合，指定位置p上的CG为：</p>
+<p>$$CG_{p}&#x3D;\sum_{i&#x3D;1}^p rel_{i}$$</p>
+<p>$rel_{i}$代表i这个位置的相关度。</p>
+<p>比如搜索“推荐系统”图书时，最理想的结果时R1、R2、R3，但出现的结果是 R2、R3、R1，CG值是没有变化的。</p>
+<h4 id="DCG"><a href="#DCG" class="headerlink" title="DCG"></a>DCG</h4><p>DCG， Discounted的CG，就是在每一个CG的结果上除以一个折损值，目的是为了让排名越考前的结果越能影响最后的结果，假设排序越靠后，价值越低，那么到第i个位置时，价值为$\frac{1}{log_{2}(i+1)}$，那么第i个结果产生的效益是$rek_{i}*1&#x2F;log_{2}(i+1)$，所以DCG表达式为：</p>
+<p>$$DCG_{p}&#x3D;\sum_{i&#x3D;1}^p \frac{rel_{i}}{log_{2}(i+1)}$$<br>$$&#x3D;rel_{i}+\sum_{i&#x3D;2}^{n} \frac{rel_{i}}{log_{2}(i+1)}$$</p>
+<p>另外一种比较常用的公式，增加相关度影响比重的DCG计算方式是：</p>
+<p>$$DCG_{p}&#x3D;\sum_{i&#x3D;1}^p \frac{2^{rel_{i}}-1}{log_{2}(i+1)}$$</p>
+<p>百科中写到后一种更多用于工业。当然相关性值为二进制时，即$rel_{i}$ 在0,1，二者结果是一样的。当然CG相关性不止是两个，可以是实数的形式。</p>
+<h4 id="NDCG-1"><a href="#NDCG-1" class="headerlink" title="NDCG"></a>NDCG</h4><p>NDCG，归一化的DCG，由于搜索结果随着检索词的不同，返回的数量是不一样的，而DCG是一个累加的值，没法针对两个不同的检索结果进行归一化出力，这里是除以IDCG。</p>
+<p>$$NDCG_{p}&#x3D;\frac{DCG}{IDCG_{p}}$$</p>
+<p>IDCG为理想情况下的最大的DCG的值，为：<br>$$IDCG_{p}&#x3D;\sum_{i&#x3D;1}^{REL} \frac{2^{rel_{i}}-1}{log_{2}(i+1)}$$<br>其中$|REL|$表示，结果按照相关性从大到小的顺序排序，取前个结果组成的集合，也就是按照最优的方式对结果进行排序。</p>
+<h3 id="覆盖率"><a href="#覆盖率" class="headerlink" title="覆盖率"></a>覆盖率</h3><p>$$ 覆盖率&#x3D;\frac{推荐的物品数}{总物品数} $$</p>
+<p>覆盖率最简单的定义是，推荐系统能够推荐出来的物品占总物品的比例，将更多的物品推荐（曝光）出去，只有曝光出去才有被用户“消费”的可能；覆盖率越高表明模型能够针对更多的item产生推荐，从而促进长尾效应挖掘。</p>
+<h3 id="挖掘长尾的能力"><a href="#挖掘长尾的能力" class="headerlink" title="挖掘长尾的能力"></a>挖掘长尾的能力</h3><p>通过日志分析，我们可以知道哪些推荐的物品是流行的，哪些是长尾。拿视频推荐来举例，我们可以根据二八定律，将电影播放量降序排列，播放量占总播放量80%的前面的电影，算作热门电影，后面的当做长尾。</p>
+<p>在度量推荐系统长尾能力时，我们可以从如下三个维度来度量：</p>
+<ol>
+<li>所有长尾推荐物品中每天有多少比例被分发出去了</li>
+<li>有多少比例的用户，推荐过了长尾物品</li>
+<li>长尾内容的转化情况和产生的商业价值</li>
+</ol>
+<h3 id="多样性"><a href="#多样性" class="headerlink" title="多样性"></a>多样性</h3><p>用户的兴趣会改变的，而且有些产品的用户不止一个，同一个用户的兴趣也会受到时间段、心情、节日等多种因素的影响，在推荐列表中插入不同类别的产品来提高多样性。</p>
+<h3 id="时效性"><a href="#时效性" class="headerlink" title="时效性"></a>时效性</h3><p>不同的产品有不同的时效性，比如电商类需要的时效性不是很高，但是新闻资讯、短视频这类产品，就需要很高的时效性、所以针对不同产品甚至产品下不同的类别，设置不同的时效性，这也是提高推荐质量的途径之一。</p>
+<p>所以时效性一般分为四个级别：日级、小时级、分钟级、秒级。我们可以根据不同的产品形态，不同的业务场景等因素来进行评估，选出产品所属的时效性。</p>
+<h2 id="Replay"><a href="#Replay" class="headerlink" title="Replay"></a>Replay</h2><h3 id="动态离线评估方法"><a href="#动态离线评估方法" class="headerlink" title="动态离线评估方法"></a>动态离线评估方法</h3><p><strong>传统离线评估方法和动态离线方法对比</strong></p>
+<p>传统离线方法：模型不会随着评估的进行而更新，假设用一个月得测试数据评估一个推荐系统，如果评估过程是静态的，这就意味着当模型对月末得数据进行预测时，模型已经停止更新近30天了，这不仅不符合工程实践，而且会导致模型效果评估得失真<br>动态离线评估方法：先根据样本产生时间对测试样本由早到晚进行排序，再用模型根据样本时间依次进行预测，在模型更新的时间点上，模型需要增量学习更新时间点前的测试样本，更新后继续进行后续的评估。</p>
+<p>毫无疑问，动态评估的过程更接近真实的线上环境，评测结果也更接近客观情况，如果模型更新的频率持续增加，快到接收到样本就更新，整个动态评估的过程也变成逐一样本回放的精准线上仿真过程，这就是经典的仿真式离线评估方法-Replay。</p>
+<p>Replay方法不仅适用于几乎所有推荐模型的离线评估，而且是强化学习类模型唯一的离线评估方法。</p>
+<p>Replay的实际实现中有一点需要特别注意的是：样本中不能包含任何「未来信息」，要避免数据穿越的现象发生</p>
+<h3 id="A-B测试与线上评估"><a href="#A-B测试与线上评估" class="headerlink" title="A&#x2F;B测试与线上评估"></a>A&#x2F;B测试与线上评估</h3><p>上文介绍的离线评估指标无法还原真实的线上环境，几乎所有的互联网公司，线上A&#x2F;B 测试都是验证新模块、新功能、新产品是否有效的主要方法。</p>
+<h4 id="什么是A-B测试"><a href="#什么是A-B测试" class="headerlink" title="什么是A&#x2F;B测试"></a>什么是A&#x2F;B测试</h4><p>又称「分流测试」或「分桶测试」，是一个随机实验，通常被分为实验组和对照组。利用控制变量法，保持单一变量进行A、B两组的数据对比，并得到结论。</p>
+<p>线上A&#x2F;B测试无法被替代的原因主要有以下三点：</p>
+<p>离线评估无法完全消除数据有偏（data bias）现象的影响，因此得到的离线评估结果无法完全替代线上评估结果<br>离线评估无法完全还原线上的工程环境，比如请求延迟、数据丢失、标签数据缺失等，离线评估比较理想化，结果存在失真现象<br>线上系统的某些商业指标再离线评估中无法计算</p>
+<h4 id="A-B测试的分桶原则"><a href="#A-B测试的分桶原则" class="headerlink" title="A&#x2F;B测试的分桶原则"></a>A&#x2F;B测试的分桶原则</h4><p>需要注意样本等独立性和无偏性，同一用户在测试的全程中只能被分到同一个桶中。</p>
+<p>在实际的场景中，同一App或者网站需要进行多组不同类型的A&#x2F;B测试，统同一业务的不同模块也会进行A&#x2F;B测试（比如推荐系统中的召回层、排序层、展示层等），这种情况下不同层之间势必会产生干扰，同层之间也可能因为分流策略不当导致指标失真。</p>
+<p>谷歌在其实验平台论文：Overlapping Experimen Infrastructure: More, Bette, Faster Experimentation 详细介绍了实验流量分层和分流的机制。A&#x2F;B测试分流和分层的机制可以概括为：</p>
+<p>层与层之间的流量正交，即层与层之间的独立实验的流量是正交的，即实验中每组的流量穿越该层后，都会被再次随机打散，且均匀的分布再下层的每个实验中<br>同层之间的流量互斥，即<br>同层之间进行多组A&#x2F;B测试，不同测试之间的流量是不重叠的<br>一组A&#x2F;B测试中实验组和对照组的流量是不重叠的，是互斥的</p>
+<h4 id="线上A-B测试的评估指标"><a href="#线上A-B测试的评估指标" class="headerlink" title="线上A&#x2F;B测试的评估指标"></a>线上A&#x2F;B测试的评估指标</h4><p>不同业务背景关注的指标可能不一样，同一类型不同模块的业务下关注的指标也不一样，电商中经常关注的是：点击率、转化率、下单率、GMV、复购率等，娱乐咨询类平台关注的是：点击率、阅读时长、留存率等。</p>
+<p>在进行A&#x2F;B测试时，进行指标的对比和模型策略等的验证是比较有说服力的。</p>
+<h3 id="Interleaving线上评估方法"><a href="#Interleaving线上评估方法" class="headerlink" title="Interleaving线上评估方法"></a>Interleaving线上评估方法</h3><p>2013年微软提出了Interleaving线上评估方法，被当作时线上A&#x2F;B测试的预选阶段进行候选算法的快速筛选，从大量初始想法中筛选出少量优秀的推荐算法，再对缩小的算法集合进行传统的A&#x2F;B测试，以侧拉他们对用户行为的长期影响。</p>
+<p>使用 Inter leaving 进行快速线上测试。用灯泡代表候选算法。其中，最优的获胜算法用红色表示。Interleaving 能够快速地将最初的候选算法集合进行缩减，相比传统的 AB Test 更快地确定最优算法。</p>
+<h4 id="A-B测试存在的统计学问题"><a href="#A-B测试存在的统计学问题" class="headerlink" title="A&#x2F;B测试存在的统计学问题"></a>A&#x2F;B测试存在的统计学问题</h4><p>A&#x2F;B测试虽然是样本进行随机分配，但是难免会存在分布不均匀得情况，我们都知道二八原则，当对平台用户进行分流时，没有办法保证活跃用户也能被均分，因此一种可行的方法就是不对测试人群进行分组，而是让所有测试者都可以自由的选择要测试的物品，在实验结束时，统计每个人选择不同物品的比例，进行相关的数据统计（有点像做选择题哈哈），这种方案的优点在于：</p>
+<p>消除了A&#x2F;B测试者自身属性分布不均的问题<br>通过给予每个人相同的权重，降低了活跃用户对结果的影响</p>
+<p><img src="/image/Interleaving.png" alt="Interleaving"></p>
+<p>这种不区分A&#x2F;B组，而是把不同的被测对象同时提供给受试者，最后根据守试者的选择得出评估结果的方法称为——Interleaving方法。</p>
+<p>Interleaving 方法的优缺点</p>
+<p>优点：</p>
+<ul>
+<li>所需样本少</li>
+<li>测试速度快</li>
+<li>结果与A&#x2F;B测试无明显差异</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>工程实现的框架较A&#x2F;B测试复杂，实验逻辑和业务逻辑纠缠在一起，业务逻辑会被干扰</li>
+<li>Interleaving方法只是对“用户对算法推荐结果偏好程度”的相对测量，不能得出一个算法真实的表现，如果需要知道某个算法的具体指标提升，不适合使用Interleaving</li>
+</ul>
+<h2 id="用户数据指标"><a href="#用户数据指标" class="headerlink" title="用户数据指标"></a>用户数据指标</h2><p>所谓的用户指标就是从用户的角度去衡量所推荐产品的效果，是否满足用户的需求，能不能给用户带来惊喜，或者引发用户搜索更多产品等，可以从以下几个标准来衡量：</p>
+<h3 id="推荐命中率-准确度"><a href="#推荐命中率-准确度" class="headerlink" title="推荐命中率&#x2F;准确度"></a>推荐命中率&#x2F;准确度</h3><p>推荐命中率&#x2F;准确度就是所推荐的产品用户喜不喜欢的最直观的指标，比如推荐的商品，用户有没有加入购物车或者下单，推荐的音乐用户有没有收藏或收听，推荐的课程用户有没有学习等，都可以用来衡量用推荐的命中率。</p>
+<h3 id="用户的喜欢程度"><a href="#用户的喜欢程度" class="headerlink" title="用户的喜欢程度"></a>用户的喜欢程度</h3><p>用户的行为反应出用户对于推荐产品的喜爱程度，比如：推荐的歌曲用户听了之后有没有收藏，收藏之后有没有分享出去；推荐的商品有没有浏览，浏览后有没有加入购物车，加入购物车后有没有购买等；不同的行为体现了不同的喜欢程度，这一指标很好的衡量推荐产品的效果。</p>
+<h3 id="产品对于用户的新颖性"><a href="#产品对于用户的新颖性" class="headerlink" title="产品对于用户的新颖性"></a>产品对于用户的新颖性</h3><p>推荐用户没有接触过的产品，不一定是用户喜欢的，但是可以提升用户的探索欲望，从而获取更完整的用户兴趣。</p>
+<h3 id="多样性-1"><a href="#多样性-1" class="headerlink" title="多样性"></a>多样性</h3><p>用户的兴趣是多样的，在做推荐的时候需要给用户提供多样的物品，可以挖掘新用户的兴趣点，拓展用户的兴趣范围，提升用户的体验</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">王宝旭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/post/c619fa62.html">http://example.com/post/c619fa62.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a></div><div class="post_share"><div class="social-share" data-image="/img/index.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/post/625346da.html" title="DeepFM算法"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">DeepFM算法</div></div></a></div><div class="next-post pull-right"><a href="/post/89133620.html" title="基于Paddle的老年人智能用药辅助系统"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">基于Paddle的老年人智能用药辅助系统</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/post/d222aa33.html" title="深度推荐系统模型"><img class="cover" src="/img/index.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-27</div><div class="title">深度推荐系统模型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">王宝旭</div><div class="author-info__description">欲戴王冠，必承其重</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">15</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RobertShaw-bot/"><i class="iconfont icon-youxishoubing"></i><span>Fllow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><b><font color="#e66b6d">努</font> <font color="#e66d98">力</font> <font color="#e66cc6">为</font> <font color="#cc6de6">计</font> <font color="#9770e6">算</font> <font color="#6d93e6">机</font> <font color="#6fcde6">事</font> <font color="#72e6b6">业</font> <font color="#72e689">添</font> <font color="#99e670">砖</font><font color="#cde670">加</font> <font color="#e6df72">瓦</font> <font color="#e6c073">！</font> <p align="center"><img src="https://haiyong.site/img/img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">邮箱：wangbaoxu0206@163.com</p> <p align="center">本站学习资源参考网站：paddlepedia.readthedocs.io</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">推荐系统评估指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E8%BD%AC%E5%8C%96%E6%8C%87%E6%A0%87"><span class="toc-number">1.1.</span> <span class="toc-text">场景转化指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pv%E7%82%B9%E5%87%BB%E7%8E%87"><span class="toc-number">1.1.1.</span> <span class="toc-text">pv点击率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uv%E7%82%B9%E5%87%BB%E7%8E%87"><span class="toc-number">1.1.2.</span> <span class="toc-text">uv点击率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%9D%E5%85%89%E7%82%B9%E5%87%BB%E7%8E%87"><span class="toc-number">1.1.3.</span> <span class="toc-text">曝光点击率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uv%E8%BD%AC%E5%8C%96%E7%8E%87"><span class="toc-number">1.1.4.</span> <span class="toc-text">uv转化率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%BA%E5%9D%87%E7%82%B9%E5%87%BB%E6%AC%A1%E6%95%B0"><span class="toc-number">1.1.5.</span> <span class="toc-text">人均点击次数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%BB%A1%E6%84%8F%E5%BA%A6"><span class="toc-number">1.2.</span> <span class="toc-text">消费满意度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%99%E5%AD%98%E7%8E%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">留存率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9C%E7%95%99%E6%97%B6%E9%97%B4%E9%95%BF"><span class="toc-number">1.2.2.</span> <span class="toc-text">停留时间长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%AD%E6%94%BE%E5%AE%8C%E6%88%90%E7%8E%87"><span class="toc-number">1.2.3.</span> <span class="toc-text">播放完成率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E7%BA%BF%E8%AF%84%E4%BC%B0%E9%AA%8C%E8%AF%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">离线评估验证方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Holdout%E6%A3%80%E9%AA%8C"><span class="toc-number">1.3.1.</span> <span class="toc-text">Holdout检验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A4%E5%8F%89%E6%A3%80%E9%AA%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text">交叉检验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#k-fold%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">k-fold交叉验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%95%99%E4%B8%80%E9%AA%8C%E8%AF%81"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">留一验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A9%E6%B3%95"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">自助法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E7%BA%BF%E8%AF%84%E4%BC%B0%E7%9A%84%E4%B8%BB%E8%A6%81%E6%8C%87%E6%A0%87"><span class="toc-number">1.4.</span> <span class="toc-text">离线评估的主要指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-number">1.4.1.</span> <span class="toc-text">准确率</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E7%A1%AE%E7%8E%87%E5%92%8C%E5%8F%AC%E5%9B%9E%E7%8E%87"><span class="toc-number">1.4.2.</span> <span class="toc-text">精确率和召回率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E6%A0%B9%E8%AF%AF%E5%B7%AE"><span class="toc-number">1.4.3.</span> <span class="toc-text">均方根误差</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="toc-number">1.4.3.1.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-number">1.4.4.</span> <span class="toc-text">对数损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#P-R%E6%9B%B2%E7%BA%BF"><span class="toc-number">1.4.5.</span> <span class="toc-text">P-R曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ROC%E6%9B%B2%E7%BA%BF"><span class="toc-number">1.4.6.</span> <span class="toc-text">ROC曲线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E5%9D%87%E7%B2%BE%E5%BA%A6%E5%9D%87%E5%80%BC"><span class="toc-number">1.4.7.</span> <span class="toc-text">平均精度均值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NDCG"><span class="toc-number">1.4.8.</span> <span class="toc-text">NDCG</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CG"><span class="toc-number">1.4.8.1.</span> <span class="toc-text">CG</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DCG"><span class="toc-number">1.4.8.2.</span> <span class="toc-text">DCG</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NDCG-1"><span class="toc-number">1.4.8.3.</span> <span class="toc-text">NDCG</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A6%86%E7%9B%96%E7%8E%87"><span class="toc-number">1.4.9.</span> <span class="toc-text">覆盖率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%96%E6%8E%98%E9%95%BF%E5%B0%BE%E7%9A%84%E8%83%BD%E5%8A%9B"><span class="toc-number">1.4.10.</span> <span class="toc-text">挖掘长尾的能力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B7%E6%80%A7"><span class="toc-number">1.4.11.</span> <span class="toc-text">多样性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">1.4.12.</span> <span class="toc-text">时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Replay"><span class="toc-number">1.5.</span> <span class="toc-text">Replay</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%A6%BB%E7%BA%BF%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.1.</span> <span class="toc-text">动态离线评估方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#A-B%E6%B5%8B%E8%AF%95%E4%B8%8E%E7%BA%BF%E4%B8%8A%E8%AF%84%E4%BC%B0"><span class="toc-number">1.5.2.</span> <span class="toc-text">A&#x2F;B测试与线上评估</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFA-B%E6%B5%8B%E8%AF%95"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">什么是A&#x2F;B测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A-B%E6%B5%8B%E8%AF%95%E7%9A%84%E5%88%86%E6%A1%B6%E5%8E%9F%E5%88%99"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">A&#x2F;B测试的分桶原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BA%BF%E4%B8%8AA-B%E6%B5%8B%E8%AF%95%E7%9A%84%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="toc-number">1.5.2.3.</span> <span class="toc-text">线上A&#x2F;B测试的评估指标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Interleaving%E7%BA%BF%E4%B8%8A%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.3.</span> <span class="toc-text">Interleaving线上评估方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-B%E6%B5%8B%E8%AF%95%E5%AD%98%E5%9C%A8%E7%9A%84%E7%BB%9F%E8%AE%A1%E5%AD%A6%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">A&#x2F;B测试存在的统计学问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%95%B0%E6%8D%AE%E6%8C%87%E6%A0%87"><span class="toc-number">1.6.</span> <span class="toc-text">用户数据指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A8%E8%8D%90%E5%91%BD%E4%B8%AD%E7%8E%87-%E5%87%86%E7%A1%AE%E5%BA%A6"><span class="toc-number">1.6.1.</span> <span class="toc-text">推荐命中率&#x2F;准确度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%9A%84%E5%96%9C%E6%AC%A2%E7%A8%8B%E5%BA%A6"><span class="toc-number">1.6.2.</span> <span class="toc-text">用户的喜欢程度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%A7%E5%93%81%E5%AF%B9%E4%BA%8E%E7%94%A8%E6%88%B7%E7%9A%84%E6%96%B0%E9%A2%96%E6%80%A7"><span class="toc-number">1.6.3.</span> <span class="toc-text">产品对于用户的新颖性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B7%E6%80%A7-1"><span class="toc-number">1.6.4.</span> <span class="toc-text">多样性</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/27f4666e.html" title="用于个性化和推荐系统的深度学习推荐模型"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用于个性化和推荐系统的深度学习推荐模型"/></a><div class="content"><a class="title" href="/post/27f4666e.html" title="用于个性化和推荐系统的深度学习推荐模型">用于个性化和推荐系统的深度学习推荐模型</a><time datetime="2024-03-27T08:51:27.000Z" title="Created 2024-03-27 16:51:27">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d222aa33.html" title="深度推荐系统模型"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度推荐系统模型"/></a><div class="content"><a class="title" href="/post/d222aa33.html" title="深度推荐系统模型">深度推荐系统模型</a><time datetime="2024-03-27T07:44:47.000Z" title="Created 2024-03-27 15:44:47">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/625346da.html" title="DeepFM算法"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeepFM算法"/></a><div class="content"><a class="title" href="/post/625346da.html" title="DeepFM算法">DeepFM算法</a><time datetime="2024-03-27T07:17:23.000Z" title="Created 2024-03-27 15:17:23">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c619fa62.html" title="推荐系统的评估指标"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="推荐系统的评估指标"/></a><div class="content"><a class="title" href="/post/c619fa62.html" title="推荐系统的评估指标">推荐系统的评估指标</a><time datetime="2024-03-27T07:15:51.000Z" title="Created 2024-03-27 15:15:51">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/89133620.html" title="基于Paddle的老年人智能用药辅助系统"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="基于Paddle的老年人智能用药辅助系统"/></a><div class="content"><a class="title" href="/post/89133620.html" title="基于Paddle的老年人智能用药辅助系统">基于Paddle的老年人智能用药辅助系统</a><time datetime="2024-03-23T08:46:26.000Z" title="Created 2024-03-23 16:46:26">2024-03-23</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/index.png')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2024 By 王宝旭</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
