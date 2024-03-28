@@ -1,0 +1,419 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>强化学习 | 希予</title><meta name="author" content="王宝旭"><meta name="copyright" content="王宝旭"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="强化学习1、强化学习基本知识  强化学习就是通过试错，让智能体agent学习解决某种问题的思路，从而可以自行做出决策。 1.1Agent &amp;&amp; EnviromentAgent：负责决策的程序 Environment: agent的外部世界，比如游戏环境，现实问题的场景 Agent 相关概念 Policy Function: state -&gt; action (策略函数，是由st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习">
+<meta property="og:url" content="http://example.com/post/748f0bbe.html">
+<meta property="og:site_name" content="希予">
+<meta property="og:description" content="强化学习1、强化学习基本知识  强化学习就是通过试错，让智能体agent学习解决某种问题的思路，从而可以自行做出决策。 1.1Agent &amp;&amp; EnviromentAgent：负责决策的程序 Environment: agent的外部世界，比如游戏环境，现实问题的场景 Agent 相关概念 Policy Function: state -&gt; action (策略函数，是由st">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/img/index.png">
+<meta property="article:published_time" content="2024-03-28T12:22:44.000Z">
+<meta property="article:modified_time" content="2024-03-28T12:23:19.026Z">
+<meta property="article:author" content="王宝旭">
+<meta property="article:tag" content="强化学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/index.png"><link rel="shortcut icon" href="/img/1.jpg"><link rel="canonical" href="http://example.com/post/748f0bbe.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.12.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.0/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '强化学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-28 20:23:19'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">16</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/index.png')"><nav id="nav"><span id="blog-info"><a href="/" title="希予"><span class="site-name">希予</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">强化学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-03-28T12:22:44.000Z" title="Created 2024-03-28 20:22:44">2024-03-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-03-28T12:23:19.026Z" title="Updated 2024-03-28 20:23:19">2024-03-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">强化学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>19mins</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="强化学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="强化学习"><a href="#强化学习" class="headerlink" title="强化学习"></a>强化学习</h1><h2 id="1、强化学习基本知识"><a href="#1、强化学习基本知识" class="headerlink" title="1、强化学习基本知识"></a>1、强化学习基本知识</h2><img src="/image/image-20240328202047267.png" alt="image-20240328202047267" style="zoom: 50%;">
+
+<p>强化学习就是通过试错，让智能体agent学习解决某种问题的思路，从而可以自行做出决策。</p>
+<h3 id="1-1Agent-Enviroment"><a href="#1-1Agent-Enviroment" class="headerlink" title="1.1Agent &amp;&amp; Enviroment"></a>1.1Agent &amp;&amp; Enviroment</h3><p>Agent：负责决策的程序</p>
+<p>Environment: agent的外部世界，比如游戏环境，现实问题的场景</p>
+<h4 id="Agent-相关概念"><a href="#Agent-相关概念" class="headerlink" title="Agent 相关概念"></a>Agent 相关概念</h4><p> Policy Function: state -&gt; action (策略函数，是由state到action的映射)</p>
+<p> Value Function: state -&gt; value 或者 (state, action) -&gt; value(由于要对agent进行训练实现自主决策，在训练过程中，需要对任意状态进行评分，才能知道当前所处状态是否是最好的状态，才可以对网络进行调整)</p>
+<h4 id="Environment-相关概念"><a href="#Environment-相关概念" class="headerlink" title="Environment 相关概念"></a>Environment 相关概念</h4><ul>
+<li>State: 用于表达Environment(<strong>环境</strong>)状态的一组变量 (observation)，是对环境的描述</li>
+<li>Action：决策时可供agent选择的行动</li>
+<li>Reward：环境收到agent的action后的反馈信号。</li>
+<li>Transition Function：(state, action)  -&gt;  new state(就是实现状态转移的函数)</li>
+<li>Reward Function: (state, action) -&gt; reward（可以由s,a获得Reward的途径，可以是一个表，也可以是一个计算方法）</li>
+<li>Time Step: Agent和environment的一次交互。（观察state -&gt; action -&gt; reward &amp; new state）</li>
+<li>Discount：对未来回报的折现，有利于更准确的评估。折现率反映了agent的偏好。</li>
+</ul>
+<h2 id="2、策略迭代"><a href="#2、策略迭代" class="headerlink" title="2、策略迭代"></a>2、策略迭代</h2><p>首先要解释什么是策略？策略就是相当于根据当前的state做出相应action的过程就是策略，为了让agent能够更好的应对各种扰动情况(面临一些意外情况的时候仍能做出合理的决策)，所以</p>
+<p>需要一种评估方法来评估policy</p>
+<p>需要一种方法来改进policy</p>
+<h3 id="相关的参数"><a href="#相关的参数" class="headerlink" title="相关的参数"></a>相关的参数</h3><ul>
+<li><h4 id="Return"><a href="#Return" class="headerlink" title="Return"></a>Return</h4><p>一次决策下会产生一个reward，所有决策的reward，共同组成return</p>
+<ul>
+<li>return&#x3D;sum(reward)</li>
+<li>return&#x3D;sum(discount*reward)</li>
+</ul>
+<p>我们可以通过不同轨迹return的期望值来评价策略的好坏</p>
+<p>Expect Return：就是上面说的return期望值</p>
+</li>
+<li><h4 id="State-Value-Function"><a href="#State-Value-Function" class="headerlink" title="State Value Function"></a>State Value Function</h4><p>就是后面常说的**V(S)**，在某个给定环境和给定策略下，输入初始状态，输出return期望值，用来评估policy</p>
+<p>公式</p>
+</li>
+</ul>
+<blockquote>
+<p>V(s) &#x3D; Prob * (Reward + discount* V(s’))</p>
+</blockquote>
+<p>​       相当于从（s-&gt;s’的收益+从s’一直走到最后可能的收益）*这样走的概率</p>
+<p><img src="/image/image-20240328202115160.png" alt="image-20240328202115160"></p>
+<ul>
+<li><h4 id="Action-Value-Function"><a href="#Action-Value-Function" class="headerlink" title="Action Value Function"></a>Action Value Function</h4>就是我们常说的<strong>Q(S)</strong>,在某个环境和某种策略下，return的期望值，其公式如下：</li>
+</ul>
+<blockquote>
+<p>Q(S,a) &#x3D; Prob * (reward + discount * V(S’))</p>
+</blockquote>
+<p>​       Q和V存在递归关系，虽然看上去公式一样，V只是描述了“状态”带来的价值，而Q是在不同动作下的价值，最直观的体现在维度上，在一个位置应该有n_actions个Q值，而同一个状态下只有一个V值。</p>
+<img src="/image/image-20240328202130194.png" alt="image-20240328202130194" style="zoom:50%;">
+
+<h3 id="策略迭代"><a href="#策略迭代" class="headerlink" title="策略迭代"></a>策略迭代</h3><p>策略迭代就是先进行策略评估（计算V值–&gt;计算Q值）–&gt;策略改进（根据Q值最大更改state和action的映射关系）</p>
+<h2 id="3、探索和利用"><a href="#3、探索和利用" class="headerlink" title="3、探索和利用"></a>3、探索和利用</h2><p>什么是探索？什么是利用？</p>
+<p>这两个动作其实是对state如何确定action的一种描述</p>
+<p>探索就是在当前state下随机选取action，这样做可以使agent进行更多次尝试，在训练时更快的更多的积累经验，一般的在代码中常常体现为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">action = np.random.randint(<span class="built_in">len</span>(Q))</span><br></pre></td></tr></table></figure>
+
+<p>利用就是基于已有的经验(存储的Q值)进行动作选择(选择Q值最大的动作)，在代码中一般体现为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">action = np.argmax(Q)</span><br></pre></td></tr></table></figure>
+
+<p>在上述两个概念的基础上，可以看到为了合理平衡信息收集与信息利用，我们应该将探索和收集同时进行，即<strong>epsilon_greedy</strong></p>
+<h3 id="epsilon-greedy"><a href="#epsilon-greedy" class="headerlink" title="epsilon_greedy"></a>epsilon_greedy</h3><p>epsilon是一个超参数，当随机数大于epsilon时进行利用操作，随机数小于epsilon的时候进行探索操作，代码实现如下;</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> np.random.uniform() &gt; epsilon:</span><br><span class="line">           action = np.argmax(Q)</span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           action = np.random.randint(<span class="built_in">len</span>(Q))</span><br></pre></td></tr></table></figure>
+
+<h3 id="进阶版本epsilon-greedy"><a href="#进阶版本epsilon-greedy" class="headerlink" title="进阶版本epsilon_greedy"></a>进阶版本epsilon_greedy</h3><p>上面版本的epsilon_greedy其实是随机的进行探索和利用，但是考虑到我们更希望训练的前期进行探索，等数据量上来之后更多的去利用，代码实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> <span class="built_in">range</span>(n_episodes):</span><br><span class="line">        decay_episodes = e * decay_ratio</span><br><span class="line">        epsilon = init_epsilon -  decay_episodes</span><br><span class="line">        epsilon = <span class="built_in">max</span>(epsilon, min_epsilon)</span><br><span class="line">        <span class="keyword">if</span> np.random.uniform() &gt; epsilon:</span><br><span class="line">            action = np.argmax(Q)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            action = np.random.randint(<span class="built_in">len</span>(Q))</span><br></pre></td></tr></table></figure>
+
+<h3 id="Softmax策略"><a href="#Softmax策略" class="headerlink" title="Softmax策略"></a>Softmax策略</h3><p>Softmax是一个函数，能够将输出的同类型的值按着值的大小转换成概率，这样设计就可以使高Q值的action被选中的概率越来越大</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">temp_value = <span class="built_in">max</span>(temp[e], min_temp)</span><br><span class="line">scaled_Q = Q / temp_value</span><br><span class="line">norm_Q = scaled_Q - np.<span class="built_in">max</span>(scaled_Q)</span><br><span class="line">exp_Q = np.exp(norm_Q)</span><br><span class="line">probs = exp_Q / np.<span class="built_in">sum</span>(exp_Q)</span><br><span class="line"></span><br><span class="line">action =np.random.choice(np.arange(<span class="built_in">len</span>(probs)), </span><br><span class="line">                                  size=<span class="number">1</span>, </span><br><span class="line">                                  p=probs)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、蒙特卡洛方法"><a href="#4、蒙特卡洛方法" class="headerlink" title="4、蒙特卡洛方法"></a>4、蒙特卡洛方法</h2><p>之前我们的所有方法计算V、Q值时，都用到了状态转移概率prob，即做出一个action或更新一个state的概率值，可是在实际的应用中，我们很难得知这个状态&#x2F;动作转移概率，因此我们需要提出一种只通过和环境交互的方法来获取Q值。</p>
+<p>蒙特卡洛里面有一个关键的参数就是G值</p>
+<blockquote>
+<p>G(1:t)&#x3D;R1+R2+…+Rt</p>
+<p>G(1:t)&#x3D;R1+G(2:t)</p>
+</blockquote>
+<p>可以看到蒙特卡洛里面就是嵌套了递归思想，必须求出Rt才能够逐步求解到G(1:t)，其每一步Q值的计算方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Q[state][action] = <span class="built_in">sum</span>(returns[state_action]) / <span class="built_in">len</span>(returns[state_action])</span><br></pre></td></tr></table></figure>
+
+<p>至于Q值的创建与更新大致分为两种情况，<strong>第一次访问状态</strong>和<strong>每一次访问状态</strong></p>
+<p>第一次访问是创建新链表存储reward信息，之后每次访问时候更新Q值为所有访问过该(state, action)对的累积回报的平均值，具体实现逻辑如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(episodes): </span><br><span class="line">        episode = play_game(env, Q)</span><br><span class="line">        visited = np.zeros((nS, nA), dtype=<span class="built_in">bool</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> t, (state, action, _, _) <span class="keyword">in</span> <span class="built_in">enumerate</span>(episode):</span><br><span class="line">            state_action = (state, action)</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> visited[state][action]:</span><br><span class="line">                visited[state][action] = <span class="literal">True</span></span><br><span class="line">                discount = np.array([<span class="number">0.9</span>**i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(episode[t:]))])</span><br><span class="line">                reward = episode[t:, -<span class="number">1</span>]</span><br><span class="line">                G = np.<span class="built_in">sum</span>( discount * reward)</span><br><span class="line">                <span class="keyword">if</span> returns.get(state_action):</span><br><span class="line">                    returns[state_action].append(G)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    returns[state_action] = [G]  </span><br><span class="line"></span><br><span class="line">                Q[state][action] = <span class="built_in">sum</span>(returns[state_action]) / <span class="built_in">len</span>(returns[state_action])</span><br><span class="line">                <span class="comment">#Q[state][action] = Q[state][action] + 1/len(returns[state_action]) * (G - Q[state][action])</span></span><br><span class="line">        pi = <span class="keyword">lambda</span> s: &#123;s:a <span class="keyword">for</span> s, a <span class="keyword">in</span> <span class="built_in">enumerate</span>(np.argmax(Q, axis=<span class="number">1</span>))&#125;[s]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>蒙特卡洛法要等一整轮游戏结束后才更新，而且利用的信息中噪声太多学习效率很低</p>
+<h2 id="5、SARSA和Q-Learning"><a href="#5、SARSA和Q-Learning" class="headerlink" title="5、SARSA和Q-Learning"></a>5、SARSA和Q-Learning</h2><p>由于蒙特卡洛法存在的缺陷，我们需要想一些方法能够实现在线学习，即实时进行参数调整</p>
+<blockquote>
+<p>G(1:t) &#x3D; R1 + G(2:t)</p>
+</blockquote>
+<p>其中我们可以用近似值来替代这个递归值，近似后式子如下;</p>
+<blockquote>
+<p>G(1:t)&#x3D;R1+V1</p>
+</blockquote>
+<p>计算V时可以利用如下公式</p>
+<blockquote>
+<p>V(St) &#x3D; V(St) + alpha * (Rt + V(St+1) -V(St))</p>
+</blockquote>
+<p>这个计算公式是基于时序差分的学习更新公式，其中：</p>
+<ul>
+<li><p>**$V(S_t)$**：当前状态(S_t)的价值估计。</p>
+</li>
+<li><p>**$V(S_t) + \alpha \times (R_t + \gamma \times V(S_{t+1}) - V(S_t))$**：更新后的$S_t$的价值估计。</p>
+</li>
+<li><p><strong>\alpha</strong>：学习率（0 &lt; (\alpha) ≤ 1），决定了新信息覆盖旧信息的速度。</p>
+</li>
+<li><p><strong>R_t</strong>：在状态(S_t)采取动作后接收到的即时奖励。</p>
+</li>
+<li><p><strong>\gamma</strong>：折扣因子（0 ≤ (\gamma) &lt; 1），决定了未来奖励的当前价值。较高的(\gamma)值意味着未来的奖励对当前决策的重要性增加。</p>
+</li>
+<li><p>**V(S_{t+1})**：下一个状态(S_{t+1})的当前价值估计。</p>
+</li>
+<li><p>**$R_t + \gamma \times V(S_{t+1}) - V(S_t)$**：这是TD误差，即预测的回报和实际回报之间的差异。</p>
+</li>
+</ul>
+<p>将这些组合起来，公式中的**$R_t + \gamma \times V(S_{t+1}) - V(S_t)$*<em>部分代表了从状态转$S_t$移到状态$S_{t+1}$后，基于即时奖励和下一个状态价值估计的总回报。这个总回报是我们基于当前知识对从状态</em>$S_t$*出发可能获得的回报的估计。然而，我们的目标是使（当前$V(S_t)$状态的价值估计）接近这个总回报的估计。因此，计算的是$R_t + \gamma \times V(S_{t+1}) - V(S_t)$当前估计与这个总回报估计之间的差异，即TD误差。如果这个误差为正，意味着实际回报（即时奖励加未来价值）比我们先前估计的要高，我们需要增加。如果这个误差为负，意味着实际回报比我们的估计要低，我们需要减少。</p>
+<h3 id="SARSA"><a href="#SARSA" class="headerlink" title="SARSA"></a>SARSA</h3><p>SARSA就是利用上面公式</p>
+<blockquote>
+<p>G(1:t)&#x3D;R1+V1</p>
+</blockquote>
+<p>来替换递归真实值，这其实是一种估算策略，针对于SARSA我们可以关注下面两点</p>
+<p>Q1、如何选取action</p>
+<p>Q2、如何进行迭代学习</p>
+<p>A1、在选取action和next_action时我们每次都调用select_action函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">select_action</span>(<span class="params">state, Q, epsilon</span>):</span><br><span class="line">    <span class="keyword">if</span> np.random.random() &gt; epsilon:</span><br><span class="line">        <span class="keyword">return</span> np.argmax(Q[state])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> np.random.randint(<span class="built_in">len</span>(Q[state]))</span><br></pre></td></tr></table></figure>
+
+<p>A2、学习时我们需要基于上述的差分公式实现迭代学习</p>
+<p>就是基于State,Action—Reward—&gt;(next_state,next_action)通过获取到的信息更新q值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">next_state, reward, finished = env.step(action)</span><br><span class="line">next_action = select_action(next_state, Q, epsilons[i])</span><br><span class="line">target = reward + gamma * Q[next_state][next_action] * (<span class="keyword">not</span> finished)</span><br><span class="line">error = target - Q[state][action]</span><br><span class="line">Q[state][action] = Q[state][action] + alphas[i] * error</span><br><span class="line">state, action = next_state, next_action</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h3><p>Q-Learning与SARSA的唯一区别就是学习时用到的Q值不同</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">target = reward + gamma * Q[next_state].<span class="built_in">max</span>() * (<span class="keyword">not</span> finished)</span><br></pre></td></tr></table></figure>
+
+<h3 id="SARSA-vs-Q-Learning"><a href="#SARSA-vs-Q-Learning" class="headerlink" title="SARSA vs Q-Learning"></a>SARSA vs Q-Learning</h3><p>SARSA是一种on-policy，就是学习和决策使用相同策略进行的，具体体现为智能体在当前状态选择动作，并在选择动作后观察到奖励和下一个状态，然后根据当前策略选择下一个动作。这个序列用于更新价值函数，指导策略的改进。因为这种更新依赖于根据当前策略选择的下一个动作，所以称为on-policy。</p>
+<p>Q-Learning是一种off-policy，即更新Q值的时候，选取下一个状态最大的Q值进行参数更新，但是下一次动作有可能不依照这个策略（有一定概率进行探索）</p>
+<p>因此看来Q-Learning更贪心一点。</p>
+<h2 id="6、Model-Based方法"><a href="#6、Model-Based方法" class="headerlink" title="6、Model-Based方法"></a>6、Model-Based方法</h2><p>从蒙特卡洛方法开始，我们并不清楚环境的内在机制，相当于只是通过与环境交互来获取所有的经验，Model-Based方法是我们能够使agent在交互的过程中自己逐渐探索到状态转移概率prob</p>
+<p>我们定义三元组T_count来记录(state,action)—&gt;next_state这样的路线，用R_model来记录这样做的reward</p>
+<p>在之前的方法中，Agent学习的速度很慢，相当于每走一步才会学习到一条信息，当我们能够有效收集上述信息的时候，就可以更合理的选择下一步action。通俗来说就是每次不再莽撞的选择下一步，而是停下来进行思考（规划函数可以使agent在虚拟环境中交互），再进行选择，这样可以加快学习的速度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(episodes): </span><br><span class="line">        state = env.reset()</span><br><span class="line">        finished = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> finished:</span><br><span class="line">            action = select_action(state, Q, epsilons[i])</span><br><span class="line">            next_state, reward, finished = env.step(action)</span><br><span class="line"></span><br><span class="line">            <span class="comment">#  记录环境反馈信息，统计转移次数和回报</span></span><br><span class="line">            T_count[state][action][next_state] += <span class="number">1</span></span><br><span class="line">            r_diff = reward - R_model[state][action][next_state]</span><br><span class="line">            R_model[state][action][next_state] += (r_diff / T_count[state][action][next_state])</span><br><span class="line">            target = reward + gamma * Q[next_state].<span class="built_in">max</span>() * (<span class="keyword">not</span> finished)</span><br><span class="line">            error = target - Q[state][action]</span><br><span class="line">            Q[state][action] = Q[state][action] + alphas[i] * error</span><br><span class="line"></span><br><span class="line">            backup_next_state = next_state</span><br><span class="line">            <span class="comment"># 进入规划循环</span></span><br><span class="line">            <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n_planning):</span><br><span class="line">                <span class="keyword">if</span> Q.<span class="built_in">sum</span>() == <span class="number">0</span>: <span class="keyword">break</span></span><br><span class="line">                <span class="comment"># 选择一个曾经进入过的状态</span></span><br><span class="line">                visited_states = np.where(np.<span class="built_in">sum</span>(T_count, axis=(<span class="number">1</span>, <span class="number">2</span>)) &gt; <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">                state = np.random.choice(visited_states)</span><br><span class="line">                <span class="comment"># 选择一个曾经选择过的行动</span></span><br><span class="line">                actions_taken = np.where(np.<span class="built_in">sum</span>(T_count[state], axis=<span class="number">1</span>) &gt; <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">                action = np.random.choice(actions_taken)</span><br><span class="line">                <span class="comment"># 根据环境模型计算出可能的下一步状态和可能的回报</span></span><br><span class="line">                probs = T_count[state][action]/T_count[state][action].<span class="built_in">sum</span>()</span><br><span class="line">                next_state = np.random.choice(np.arange(nS), size=<span class="number">1</span>, p=probs)[<span class="number">0</span>]</span><br><span class="line">                reward = R_model[state][action][next_state]</span><br><span class="line">                planning_track.append((state, action, reward, next_state))</span><br><span class="line"></span><br><span class="line">                target = reward + gamma * Q[next_state].<span class="built_in">max</span>()</span><br><span class="line">                error = target - Q[state][action]</span><br><span class="line">                Q[state][action] = Q[state][action] + alphas[i] * error</span><br><span class="line">            </span><br><span class="line">            state = backup_next_state</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、从Q表到神经网络"><a href="#7、从Q表到神经网络" class="headerlink" title="7、从Q表到神经网络"></a>7、从Q表到神经网络</h2><p>使用Q表有很多的缺点：</p>
+<ul>
+<li>无法处理(stats,action)过多的情况</li>
+<li>只能处理离散的值</li>
+<li>不具备泛化能力</li>
+</ul>
+<p>因此我们希望利用一个神经网络实现由state到action,Q的映射关系，这个神经网络的输入应该和state的维度一致，输出维度与action维度一致，输出的值为不同action所对应的Q值，其具体代码实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> finished :</span><br><span class="line">            q_value = model(state)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># take action</span></span><br><span class="line">            action = select_action(q_value,epsilons[i])</span><br><span class="line">            next_state, reward, finished, _, _ = env.step(action)</span><br><span class="line">            next_state = conv2tensor(next_state,nS)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># find target</span></span><br><span class="line">            target = q_value.clone().detach()</span><br><span class="line">            q_value_next = model(next_state).detach().numpy().squeeze()</span><br><span class="line">            td_target = reward + gamma * q_value_next.<span class="built_in">max</span>() * (<span class="keyword">not</span> finished)</span><br><span class="line">            target[action] = td_target</span><br><span class="line">            </span><br><span class="line">            optimizer.zero_grad()</span><br><span class="line">            td_error = loss_fn(q_value,target)</span><br><span class="line">            td_error.backward()</span><br><span class="line">            optimizer.step()</span><br><span class="line">            state = next_state</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>target = q_value.clone().detach()</code>: 克隆并分离当前状态的Q值向量。这一步创建了一个与当前模型输出（即Q值向量）内容相同，但在计算图中独立的对象。这意味着对<code>target</code>的修改不会影响原始的<code>q_value</code>张量的梯度。</p>
+</li>
+<li><p><code>q_value_next = model(next_state).detach().numpy().squeeze()</code>: 用模型预测下一个状态的Q值，然后从PyTorch张量转换为NumPy数组，并去掉所有单维度条目。<code>detach()</code>确保这个预测不会在反向传播中计算梯度，因为我们仅仅是用它来计算TD目标。</p>
+</li>
+<li><p><code>td_target = reward + gamma * q_value_next.max() * (not finished)</code>: 计算TD目标。这里使用了即时奖励加上对下一状态Q值的最大值（考虑折扣因子<code>gamma</code>）的方式来计算TD目标。如果episode已经结束（即<code>finished</code>为真），则TD目标仅为即时奖励。</p>
+</li>
+<li><p><code>target[action] = td_target</code>: 更新<code>target</code>向量在执行动作处的值为TD目标，其他位置的值保持不变。这意味着我们只对当前采取的动作的Q值进行更新。</p>
+</li>
+</ul>
+<h4 id="模型更新"><a href="#模型更新" class="headerlink" title="模型更新"></a>模型更新</h4><ul>
+<li><p><code>optimizer.zero_grad()</code>: 清除之前的梯度信息。在每次模型更新前执行，以避免梯度累加。</p>
+</li>
+<li><p><code>td_error = loss_fn(q_value, target)</code>: 计算当前Q值（<code>q_value</code>）与TD目标（<code>target</code>）之间的损失。<code>loss_fn</code>是一个损失函数，比如均方误差（MSE），用来衡量两者之间的差异。</p>
+</li>
+<li><p><code>td_error.backward()</code>: 反向传播计算梯度。这一步基于计算出的损失，通过网络反向传播计算每个参数的梯度。</p>
+</li>
+<li><p><code>optimizer.step()</code>: 更新模型的参数。这一步根据计算出的梯度和选择的优化算法（如Adam或SGD），更新模型的权重，以减小TD误差。</p>
+</li>
+<li><p><code>state = next_state</code>: 更新当前状态为下一状态，为下一轮迭代准备。</p>
+</li>
+</ul>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>样本之间不满足独立同分布假设（i.i.d)</p>
+<p>target由正在变换的模型得出，不是一个稳定的目标</p>
+<h2 id="8、Deep-Q-Network"><a href="#8、Deep-Q-Network" class="headerlink" title="8、Deep Q Network"></a>8、Deep Q Network</h2><p>在DQN中，我们要解决上述提出的两个问题</p>
+<p>-专门构造一个target network，缓解No-stationary target问题</p>
+<p>target网络的结构与计算Q值的网络完全一样，只不过target网络会每隔一段时间更新一次，在间隔时间内target网络结构保持不变，提供了一个稳定的target目标值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Q_value = self.model(state).gather(-<span class="number">1</span>, action).squeeze()</span><br><span class="line">Q_value_next = self.target_model(next_state).detach().<span class="built_in">max</span>(-<span class="number">1</span>)[<span class="number">0</span>]</span><br><span class="line">target =  (reward + self.gamma * Q_value_next * (<span class="number">1</span> - done)).squeeze()</span><br></pre></td></tr></table></figure>
+
+<p>- 使用经验缓冲数据进行训练，缓解No-IID问题</p>
+<p>将所有经验放进缓冲区（在代码中定义为一个队列），这里指的经验就是与环境交互的一些信息如state,action,reward等一系列有关的经验，每mini-batch进行一次训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">remember</span>(<span class="params">self, state, action, reward, next_state, done</span>):</span><br><span class="line">       self.memory.append((state, action, reward, next_state, done)) </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_long_memory</span>(<span class="params">self,batch_size</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(self.memory) &gt; batch_size:</span><br><span class="line">       mini_sample = random.sample(self.memory, batch_size) <span class="comment"># list of tuples</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mini_sample = self.memory</span><br><span class="line">    states, actions, rewards, next_states, dones = <span class="built_in">zip</span>(*mini_sample)</span><br><span class="line">    states = np.array(states)</span><br><span class="line">    next_states = np.array(next_states)</span><br><span class="line">    self.trainer.train_step(states, actions, rewards, next_states, dones)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image/image-20240328202205077.png" alt="image-20240328202205077"></p>
+<p>在训练的过程中，我们保证一定的步数后对target网络进行一次更新，并记录在训练过中的奖励。</p>
+<h3 id="DQN变体"><a href="#DQN变体" class="headerlink" title="DQN变体"></a>DQN变体</h3><p><strong>Double DQN：</strong>将action的选择和Q值估计分别使用两个DQN去做，用来解决Q值估计偏高的问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> Q_value = self.model(state).gather(-<span class="number">1</span>, action).squeeze()</span><br><span class="line">        </span><br><span class="line"><span class="comment"># Q_value_next = self.target_model(next_state).detach().max(-1)[0]</span></span><br><span class="line"><span class="comment"># Double DQN</span></span><br><span class="line">Q_value_next_index = self.model(next_state).detach().<span class="built_in">max</span>(-<span class="number">1</span>)[<span class="number">1</span>]</span><br><span class="line">Q_value_next_index = torch.unsqueeze(Q_value_next_index, -<span class="number">1</span>)</span><br><span class="line">Q_value_next_target = self.target_model(next_state).detach()</span><br><span class="line">Q_value_next = Q_value_next_target.gather(-<span class="number">1</span>, Q_value_next_index).squeeze()</span><br><span class="line"></span><br><span class="line">target =  (reward + self.gamma * Q_value_next * (<span class="number">1</span> - done)).squeeze()</span><br></pre></td></tr></table></figure>
+
+<p>model用来计算Q_value_next_index，即action</p>
+<p>target_model用来计算Q_value_next_target，即期望的Q值</p>
+<p><strong>Dueling DQN：</strong>Q&#x3D;A+V 将动作收益和状态收益分开计算</p>
+<p>在神经网络中设置两层输出，通过forward函数计算q值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_size, hidden_size, output_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.linear1 = nn.Linear(input_size, hidden_size)</span><br><span class="line">        self.linear2 = nn.Linear(hidden_size, output_size)</span><br><span class="line">        self.linear3 = nn.Linear(hidden_size, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        hidden = F.relu(self.linear1(x))</span><br><span class="line">        advantage = self.linear2(hidden)</span><br><span class="line">        value = self.linear3(hidden)</span><br><span class="line">        value = value.expand_as(advantage)</span><br><span class="line">        qvalue = value + advantage - advantage.mean(-<span class="number">1</span>, keepdim=<span class="literal">True</span>).expand_as(advantage)</span><br><span class="line">        <span class="keyword">return</span> qvalue</span><br></pre></td></tr></table></figure>
+
+<h2 id="10、策略梯度方法"><a href="#10、策略梯度方法" class="headerlink" title="10、策略梯度方法"></a>10、策略梯度方法</h2><p>在这节之上的方法都是基于值函数的方法，整体的调整思路为：策略评估—》策略改进</p>
+<p>而policy-base方法是直接对policy-function进行调整，用给定策略下的初始状态的V值来衡量agent的表现（参考蒙特卡洛的reward平均思想），优点是可以直接处理高维连续的Action-space</p>
+<p>我们需要基于策略梯度(policy gradient)对policy进行调整</p>
+<p>policy_gradient &#x3D; -(returns * logpas).mean()</p>
+<ul>
+<li>returns是一串行为轨迹中某个action后的收益之和</li>
+<li>log_prob_action是某个action的概率值取log</li>
+<li>如果一个action之后取得正的return，公式取正值，torch会让预测概率向1的方向修正</li>
+<li>如果一个action之后取得负的return，公式取负值，torch会让预测概率向0的方向修正</li>
+<li>这样就“强化”了正确的action，“弱化”了错误的action</li>
+</ul>
+<p>在前向计算时，将输出层利用softmax函数转化成概率，再用pytorch转换成对数概率，用来计算Loss，在一次游戏结束后对策略进行修正。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, state, explore</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(state, torch.Tensor):</span><br><span class="line">            state = torch.tensor(state, dtype=torch.float32)</span><br><span class="line"></span><br><span class="line">        x = F.relu(self.linear1(state))</span><br><span class="line">        x = self.linear2(x)</span><br><span class="line">        probs = F.softmax(x, dim=<span class="number">0</span>)</span><br><span class="line">        action = self.get_action(probs, explore=explore)</span><br><span class="line">        log_prob_action = torch.log(probs)[action]</span><br><span class="line">        <span class="keyword">return</span> action, log_prob_action</span><br></pre></td></tr></table></figure>
+
+<h2 id="11、DDPG方法"><a href="#11、DDPG方法" class="headerlink" title="11、DDPG方法"></a>11、DDPG方法</h2><p>采用policy-based+value_based方法</p>
+<p>先采用value-base方法，使用神经网路拟合一个Q函数，再基于Q网络训练一个policy网络，<strong>在DDPG进行探索时，并没有随机采样的过程，DDPG使用对action增加扰动来实现随机探索</strong>，适用于连续的环境(action由online_policy_model产生)。</p>
+<p>policy网络构造如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Pocily_net</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_size, h1_size, h2_size,output_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.linear1 = nn.Linear(input_size, h1_size)</span><br><span class="line">        self.linear2 = nn.Linear(h1_size, h2_size)</span><br><span class="line">        self.linear3 = nn.Linear(h2_size, output_size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        x = F.relu(self.linear1(x))</span><br><span class="line">        x = F.relu(self.linear2(x))</span><br><span class="line">        x = F.tanh(self.linear3(x))</span><br><span class="line">        <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>value网络构造如下;</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Value_net</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, input_size, h1_size,h2_size, output_size</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        self.linear1 = nn.Linear(input_size, h1_size)</span><br><span class="line">        self.linear2 = nn.Linear(h1_size+output_size, h2_size)</span><br><span class="line">        self.linear3 = nn.Linear(h2_size, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, action</span>):</span><br><span class="line">        x = F.relu(self.linear1(x))</span><br><span class="line">        x = torch.cat((x, action), dim = <span class="number">1</span>)</span><br><span class="line">        x = F.relu(self.linear2(x))</span><br><span class="line">        x = self.linear3(x)</span><br><span class="line">        <span class="keyword">return</span> x  </span><br></pre></td></tr></table></figure>
+
+<p>要注意输入的维度时观测到的状态值，在第二层网络时要将action和第一层网络输出进行拼接，用来预测q值。</p>
+<p>Agent网络定义：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Agent</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,state_space, action_space,h1_size = <span class="number">200</span>,h2_size = <span class="number">100</span>,  gamma = <span class="number">0.99</span>,</span></span><br><span class="line"><span class="params">                max_memory=<span class="number">50000</span>, lr=<span class="number">0.001</span></span>):</span><br><span class="line">        self.memory = deque(maxlen=max_memory) </span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.online_value_model = Value_net(state_space,h1_size,h2_size,action_space)</span><br><span class="line">        self.target_value_model = Value_net(state_space,h1_size,h2_size,action_space)</span><br><span class="line">        self.online_policy_model = Pocily_net(state_space,h1_size,h2_size,action_space)</span><br><span class="line">        self.target_policy_model = Pocily_net(state_space,h1_size,h2_size,action_space)</span><br><span class="line">        self.value_optimizer = optim.Adam(self.online_value_model.parameters(), lr=lr)</span><br><span class="line">        self.policy_optimizer = optim.Adam(self.online_policy_model.parameters(), lr=lr)</span><br><span class="line">        self.noise = Noise(action_space)</span><br><span class="line">        self.criterion = nn.MSELoss()</span><br><span class="line">        self.copy_model()</span><br></pre></td></tr></table></figure>
+
+<p>借助于类似DQN的思想，target用来产出稳定预测值，online进行学习训练，所以一共有四个网络</p>
+<p>在训练优化过程中，先对valuenetwork进行优化，利用两个稳定的网络target_value产出Q值，target_policy预测下面一个动作，计算target_Q_value，再对网络进行优化。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Q_value = self.online_value_model(states,actions)</span><br><span class="line"></span><br><span class="line">next_policy_action = self.target_policy_model(next_states)</span><br><span class="line">next_Q_value = self.target_value_model(next_states, next_policy_action)</span><br><span class="line"></span><br><span class="line">target_Q_value = (rewards + self.gamma * next_Q_value * (<span class="number">1</span> - dones))</span><br><span class="line"></span><br><span class="line">value_loss = self.criterion(Q_value,target_Q_value)</span><br><span class="line">self.value_optimizer.zero_grad()</span><br><span class="line">value_loss.backward()</span><br><span class="line">self.value_optimizer.step()</span><br></pre></td></tr></table></figure>
+
+<p>policy进行优化的目的是使得预测出来的action的Q值越大越好，所以必须要获取实际参与预测的action，也就是取到online_policy的action预测值，再将这个值放进online_value模型中，使这个值预测最大</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">policy_action = self.online_policy_model(states)</span><br><span class="line">policy_action_q = self.online_value_model(states,policy_action)</span><br><span class="line">policy_loss = -policy_action_q.mean()</span><br><span class="line">self.policy_optimizer.zero_grad()</span><br><span class="line">policy_loss.backward()</span><br><span class="line">self.policy_optimizer.step()</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">王宝旭</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/post/748f0bbe.html">http://example.com/post/748f0bbe.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/">强化学习</a></div><div class="post_share"><div class="social-share" data-image="/img/index.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/post/27f4666e.html" title="用于个性化和推荐系统的深度学习推荐模型"><img class="cover" src="/img/index.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">用于个性化和推荐系统的深度学习推荐模型</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">王宝旭</div><div class="author-info__description">欲戴王冠，必承其重</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/RobertShaw-bot/"><i class="iconfont icon-youxishoubing"></i><span>Fllow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content"><b><font color="#e66b6d">努</font> <font color="#e66d98">力</font> <font color="#e66cc6">为</font> <font color="#cc6de6">计</font> <font color="#9770e6">算</font> <font color="#6d93e6">机</font> <font color="#6fcde6">事</font> <font color="#72e6b6">业</font> <font color="#72e689">添</font> <font color="#99e670">砖</font><font color="#cde670">加</font> <font color="#e6df72">瓦</font> <font color="#e6c073">！</font> <p align="center"><img src="https://haiyong.site/img/img-blog.csdnimg.cn/f7384c88956d4378b72e47548e19c9f8.gif" width="50" alt="mao"></p> <p align="center">邮箱：wangbaoxu0206@163.com</p> <p align="center">本站学习资源参考网站：paddlepedia.readthedocs.io</p></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">强化学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="toc-number">1.1.</span> <span class="toc-text">1、强化学习基本知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1Agent-Enviroment"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1Agent &amp;&amp; Enviroment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Agent-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">Agent 相关概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Environment-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">Environment 相关概念</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3"><span class="toc-number">1.2.</span> <span class="toc-text">2、策略迭代</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">1.2.1.</span> <span class="toc-text">相关的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Return"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">Return</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#State-Value-Function"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">State Value Function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Action-Value-Function"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">Action Value Function</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E8%BF%AD%E4%BB%A3"><span class="toc-number">1.2.2.</span> <span class="toc-text">策略迭代</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E6%8E%A2%E7%B4%A2%E5%92%8C%E5%88%A9%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">3、探索和利用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#epsilon-greedy"><span class="toc-number">1.3.1.</span> <span class="toc-text">epsilon_greedy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%89%88%E6%9C%ACepsilon-greedy"><span class="toc-number">1.3.2.</span> <span class="toc-text">进阶版本epsilon_greedy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Softmax%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.3.</span> <span class="toc-text">Softmax策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%96%B9%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">4、蒙特卡洛方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-number">1.4.1.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81SARSA%E5%92%8CQ-Learning"><span class="toc-number">1.5.</span> <span class="toc-text">5、SARSA和Q-Learning</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SARSA"><span class="toc-number">1.5.1.</span> <span class="toc-text">SARSA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-Learning"><span class="toc-number">1.5.2.</span> <span class="toc-text">Q-Learning</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SARSA-vs-Q-Learning"><span class="toc-number">1.5.3.</span> <span class="toc-text">SARSA vs Q-Learning</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81Model-Based%E6%96%B9%E6%B3%95"><span class="toc-number">1.6.</span> <span class="toc-text">6、Model-Based方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E4%BB%8EQ%E8%A1%A8%E5%88%B0%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.7.</span> <span class="toc-text">7、从Q表到神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9B%B4%E6%96%B0"><span class="toc-number">1.7.0.1.</span> <span class="toc-text">模型更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="toc-number">1.7.0.2.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8%E3%80%81Deep-Q-Network"><span class="toc-number">1.8.</span> <span class="toc-text">8、Deep Q Network</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DQN%E5%8F%98%E4%BD%93"><span class="toc-number">1.8.1.</span> <span class="toc-text">DQN变体</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10%E3%80%81%E7%AD%96%E7%95%A5%E6%A2%AF%E5%BA%A6%E6%96%B9%E6%B3%95"><span class="toc-number">1.9.</span> <span class="toc-text">10、策略梯度方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11%E3%80%81DDPG%E6%96%B9%E6%B3%95"><span class="toc-number">1.10.</span> <span class="toc-text">11、DDPG方法</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/post/748f0bbe.html" title="强化学习"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="强化学习"/></a><div class="content"><a class="title" href="/post/748f0bbe.html" title="强化学习">强化学习</a><time datetime="2024-03-28T12:22:44.000Z" title="Created 2024-03-28 20:22:44">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/27f4666e.html" title="用于个性化和推荐系统的深度学习推荐模型"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用于个性化和推荐系统的深度学习推荐模型"/></a><div class="content"><a class="title" href="/post/27f4666e.html" title="用于个性化和推荐系统的深度学习推荐模型">用于个性化和推荐系统的深度学习推荐模型</a><time datetime="2024-03-27T08:51:27.000Z" title="Created 2024-03-27 16:51:27">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/d222aa33.html" title="深度推荐系统模型"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="深度推荐系统模型"/></a><div class="content"><a class="title" href="/post/d222aa33.html" title="深度推荐系统模型">深度推荐系统模型</a><time datetime="2024-03-27T07:44:47.000Z" title="Created 2024-03-27 15:44:47">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/625346da.html" title="DeepFM算法"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeepFM算法"/></a><div class="content"><a class="title" href="/post/625346da.html" title="DeepFM算法">DeepFM算法</a><time datetime="2024-03-27T07:17:23.000Z" title="Created 2024-03-27 15:17:23">2024-03-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/post/c619fa62.html" title="推荐系统的评估指标"><img src="/img/index.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="推荐系统的评估指标"/></a><div class="content"><a class="title" href="/post/c619fa62.html" title="推荐系统的评估指标">推荐系统的评估指标</a><time datetime="2024-03-27T07:15:51.000Z" title="Created 2024-03-27 15:15:51">2024-03-27</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/index.png')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2024 By 王宝旭</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.12.0"></script><script src="/js/main.js?v=4.12.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.32/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
